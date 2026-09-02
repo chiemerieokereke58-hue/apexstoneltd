@@ -1,0 +1,930 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Deposit | ApexStone Capitals</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      :root {
+        --bg: #06101d;
+        --card: rgba(7, 25, 42, 0.78);
+        --line: rgba(120, 190, 225, 0.18);
+        --text: #fff;
+        --muted: #9eb7c9;
+        --blue: #3284ad;
+        --blue2: #54b7dc;
+        --glow: rgba(55, 170, 220, 0.35);
+      }
+
+      body {
+        min-height: 100vh;
+        color: var(--text);
+        background: var(--bg);
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          linear-gradient(rgba(4, 18, 31, 0.76), rgba(4, 18, 31, 0.93)),
+          url("https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=2000&q=80")
+            center/cover no-repeat;
+        z-index: -3;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(90, 150, 190, 0.045) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(90, 150, 190, 0.045) 1px, transparent 1px);
+        background-size: 50px 50px;
+        animation: gridMove 10s linear infinite;
+        z-index: -2;
+        pointer-events: none;
+      }
+
+      @keyframes gridMove {
+        from {
+          background-position: 0 0;
+        }
+        to {
+          background-position: 50px 50px;
+        }
+      }
+
+      /* HEADER */
+
+      header {
+        height: 70px;
+        padding: 0 25px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(5, 18, 32, 0.86);
+        border-bottom: 1px solid var(--line);
+        backdrop-filter: blur(18px);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .logo-placeholder {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+        border-radius: 10px;
+        transition: 0.4s ease;
+      }
+
+      .logo:hover .logo-placeholder {
+        transform: rotate(-5deg) scale(1.08);
+        filter: drop-shadow(0 0 14px var(--glow));
+      }
+
+      .menu-button {
+        width: 44px;
+        height: 44px;
+        border: 1px solid rgba(100, 180, 220, 0.18);
+        border-radius: 11px;
+        background: rgba(70, 130, 170, 0.18);
+        color: white;
+        font-size: 22px;
+        cursor: pointer;
+        transition: 0.35s ease;
+      }
+
+      .menu-button:hover {
+        transform: translateY(-2px) scale(1.06);
+        background: rgba(70, 150, 195, 0.35);
+        box-shadow: 0 0 25px rgba(55, 170, 220, 0.2);
+      }
+
+      /* SIDEBAR */
+
+      .sidebar {
+        position: fixed;
+        top: 0;
+        right: -300px;
+        width: 300px;
+        height: 100vh;
+        padding: 85px 20px 20px;
+        background: rgba(5, 18, 32, 0.98);
+        backdrop-filter: blur(25px);
+        border-left: 1px solid var(--line);
+        z-index: 200;
+        transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+
+      .sidebar.active {
+        right: 0;
+        box-shadow: -20px 0 60px rgba(0, 0, 0, 0.35);
+      }
+
+      .sidebar a {
+        display: block;
+        padding: 15px;
+        margin-bottom: 8px;
+        border-radius: 11px;
+        text-decoration: none;
+        color: #d7e8f5;
+        border: 1px solid transparent;
+        transition: 0.3s ease;
+      }
+
+      .sidebar a:hover {
+        transform: translateX(-7px);
+        background: rgba(70, 150, 195, 0.16);
+        border-color: rgba(100, 190, 225, 0.14);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      .close-menu {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        border: 0;
+        background: transparent;
+        color: white;
+        font-size: 28px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .close-menu:hover {
+        transform: rotate(90deg) scale(1.1);
+      }
+
+      /* MAIN */
+
+      main {
+        max-width: 1100px;
+        margin: auto;
+        padding: 45px 20px 70px;
+      }
+
+      .page-title {
+        margin-bottom: 30px;
+        animation: rise 0.7s ease both;
+      }
+
+      .page-title h1 {
+        font-size: 35px;
+        margin-bottom: 8px;
+      }
+
+      .page-title p {
+        color: var(--muted);
+      }
+
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* CARD */
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 28px;
+        margin-bottom: 25px;
+        backdrop-filter: blur(20px);
+        box-shadow: 0 25px 70px rgba(0, 0, 0, 0.28);
+        animation: rise 0.7s ease both;
+        transition: 0.4s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(100, 190, 230, 0.3);
+        box-shadow:
+          0 30px 80px rgba(0, 0, 0, 0.35),
+          0 0 35px rgba(45, 150, 200, 0.06);
+      }
+
+      .card h2 {
+        font-size: 21px;
+        margin-bottom: 22px;
+      }
+
+      /* FORM */
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #b9cfdd;
+        font-size: 14px;
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 15px;
+        border-radius: 11px;
+        border: 1px solid rgba(130, 190, 220, 0.18);
+        background: rgba(2, 12, 23, 0.75);
+        color: white;
+        outline: none;
+        font-size: 15px;
+        transition: 0.3s ease;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus {
+        border-color: var(--blue2);
+        box-shadow: 0 0 0 4px rgba(70, 170, 215, 0.08);
+        transform: translateY(-1px);
+      }
+
+      .form-group select option {
+        background: #071827;
+        color: white;
+      }
+
+      /* ASSET STATUS */
+
+      .asset-status {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+        color: #91afbf;
+        font-size: 12px;
+      }
+
+      .pulse {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #50c878;
+        box-shadow: 0 0 0 rgba(80, 200, 120, 0.5);
+        animation: pulse 1.6s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(80, 200, 120, 0.5);
+        }
+        70% {
+          box-shadow: 0 0 0 8px rgba(80, 200, 120, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(80, 200, 120, 0);
+        }
+      }
+
+      /* ADDRESS */
+
+      .wallet-box {
+        margin-top: 10px;
+        margin-bottom: 22px;
+        padding: 18px;
+        border-radius: 14px;
+        background: rgba(2, 13, 24, 0.72);
+        border: 1px solid rgba(100, 180, 220, 0.18);
+        animation: fadeIn 0.35s ease;
+      }
+
+      .wallet-box label {
+        display: block;
+        font-size: 13px;
+        color: #a9c4d5;
+        margin-bottom: 8px;
+      }
+
+      .copy-row {
+        display: flex;
+        gap: 8px;
+      }
+
+      .copy-row input {
+        flex: 1;
+        min-width: 0;
+        padding: 13px;
+        border-radius: 9px;
+        border: 1px solid rgba(120, 190, 220, 0.15);
+        background: rgba(0, 8, 17, 0.75);
+        color: #d8e8f2;
+        outline: none;
+        font-size: 13px;
+      }
+
+      .copy-button {
+        padding: 0 20px;
+        border: 0;
+        border-radius: 9px;
+        background: linear-gradient(135deg, #315d78, #397da1);
+        color: white;
+        cursor: pointer;
+        transition: 0.3s ease;
+      }
+
+      .copy-button:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 22px rgba(45, 145, 195, 0.25);
+      }
+
+      .copy-status {
+        display: block;
+        margin-top: 8px;
+        color: #8eb8cc;
+        font-size: 12px;
+        min-height: 15px;
+      }
+
+      /* CALCULATOR */
+
+      .calculator {
+        padding: 20px;
+        margin-top: 25px;
+        border-radius: 15px;
+        background: rgba(2, 13, 24, 0.55);
+        border: 1px solid rgba(110, 180, 220, 0.12);
+      }
+
+      .calculator h3 {
+        margin-bottom: 15px;
+        font-size: 17px;
+      }
+
+      .price-line {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        padding-bottom: 13px;
+        border-bottom: 1px solid rgba(120, 190, 220, 0.1);
+        font-size: 13px;
+        color: #9bb6c5;
+      }
+
+      .price-line strong {
+        color: #dceef7;
+      }
+
+      .conversion {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+      }
+
+      .conversion-box {
+        flex: 1;
+        min-width: 180px;
+        padding: 18px;
+        border-radius: 11px;
+        background: rgba(30, 70, 95, 0.15);
+        transition: 0.3s ease;
+      }
+
+      .conversion-box:hover {
+        transform: translateY(-3px);
+        background: rgba(40, 100, 130, 0.2);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.16);
+      }
+
+      .conversion-box span {
+        display: block;
+        color: #8da9b9;
+        font-size: 12px;
+        margin-bottom: 7px;
+      }
+
+      .conversion-box strong {
+        font-size: 20px;
+        word-break: break-word;
+      }
+
+      .arrow {
+        color: #7699ad;
+        font-size: 22px;
+        animation: arrowMove 1.5s ease-in-out infinite;
+      }
+
+      @keyframes arrowMove {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        50% {
+          transform: translateX(5px);
+        }
+      }
+
+      /* BUTTON */
+
+      .continue-button {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        padding: 16px;
+        border: 0;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #315d78, #3d86ab);
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: 0.35s ease;
+      }
+
+      .continue-button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -120%;
+        width: 70%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.18),
+          transparent
+        );
+        transform: skewX(-20deg);
+        transition: 0.6s ease;
+      }
+
+      .continue-button:hover::before {
+        left: 140%;
+      }
+
+      .continue-button:hover {
+        transform: translateY(-3px);
+        box-shadow:
+          0 14px 30px rgba(40, 120, 165, 0.25),
+          0 0 25px rgba(60, 180, 220, 0.12);
+      }
+
+      .continue-button:active {
+        transform: translateY(-1px) scale(0.99);
+      }
+
+      /* INFO */
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+
+      .info-box {
+        padding: 18px;
+        border-radius: 13px;
+        background: rgba(25, 65, 90, 0.14);
+        border: 1px solid rgba(110, 180, 220, 0.1);
+        transition: 0.35s ease;
+      }
+
+      .info-box:hover {
+        transform: translateY(-5px);
+        border-color: rgba(100, 190, 225, 0.25);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+      }
+
+      .info-box span {
+        display: block;
+        color: #8ca9b9;
+        font-size: 12px;
+        margin-bottom: 7px;
+      }
+
+      .info-box strong {
+        font-size: 15px;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* MOBILE */
+
+      @media (max-width: 700px) {
+        header {
+          padding: 0 15px;
+        }
+
+        .logo {
+          font-size: 17px;
+        }
+
+        .logo-placeholder {
+          width: 36px;
+          height: 36px;
+        }
+
+        main {
+          padding: 30px 14px 50px;
+        }
+
+        .page-title h1 {
+          font-size: 28px;
+        }
+
+        .card {
+          padding: 20px;
+        }
+
+        .info-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .copy-row {
+          flex-direction: column;
+        }
+
+        .copy-button {
+          padding: 13px;
+        }
+
+        .arrow {
+          display: none;
+        }
+
+        .conversion-box {
+          min-width: 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="logo">
+        <img
+          src="image/ChatGPT Image Sep 2, 2026, 01_47_36 AM.png"
+          alt="ApexStone Capitals"
+          class="logo-placeholder"
+        />
+        ApexStone Capitals
+      </div>
+
+      <button class="menu-button" onclick="openMenu()">☰</button>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+      <button class="close-menu" onclick="closeMenu()">×</button>
+
+      <a href="dashboard.html">Dashboard</a>
+      <a href="deposit.html">Deposit</a>
+      <a href="withdrawal.html">withdraw</a>
+      <a href="transaction-history.html">Transaction History</a>
+      <a href="login.html">Logout</a>
+      <a href="investment.html">investment plan</a>
+      <a href="settings.html">settings</a>
+    </aside>
+
+    <main>
+      <div class="page-title">
+        <h1>Deposit</h1>
+        <p>Add funds to your ApexStone Capitals account.</p>
+      </div>
+
+      <section class="card">
+        <h2>Deposit Funds</h2>
+
+        <div class="form-group">
+          <label for="amount">Deposit Amount (USD)</label>
+
+          <input
+            type="number"
+            id="amount"
+            min="50"
+            step="0.01"
+            placeholder="Minimum $50"
+            oninput="calculate()"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="asset">Payment Method</label>
+
+          <select id="asset" onchange="updateAsset()">
+            <option value="BTC">Bitcoin (BTC)</option>
+
+            <option value="ETH">Ethereum (ETH)</option>
+
+            <option value="LTC">Litecoin (LTC)</option>
+
+            <option value="TRON">TRON (TRX)</option>
+
+            <option value="BNB">BNB Smart Chain (BNB)</option>
+          </select>
+
+          <div class="asset-status">
+            <span class="pulse"></span>
+            <span id="priceStatus">Market price loaded</span>
+          </div>
+        </div>
+
+        <div class="wallet-box">
+          <label id="walletLabel">Bitcoin Address</label>
+
+          <div class="copy-row">
+            <input
+              type="text"
+              id="walletAddress"
+              value="TEST_ADDRESS_BTC"
+              readonly
+            />
+
+            <button type="button" class="copy-button" onclick="copyAddress()">
+              Copy
+            </button>
+          </div>
+
+          <span class="copy-status" id="copyStatus"></span>
+        </div>
+
+        <div class="calculator">
+          <h3>Conversion Calculator</h3>
+
+          <div class="price-line">
+            <span>Current <span id="currentAsset">BTC</span> price</span>
+            <strong id="currentPrice">$0.00</strong>
+          </div>
+
+          <div class="conversion">
+            <div class="conversion-box">
+              <span>USD Amount</span>
+
+              <strong id="usdValue">$0.00</strong>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="conversion-box">
+              <span id="assetName">BTC</span>
+
+              <strong id="assetValue">0 BTC</strong>
+            </div>
+          </div>
+        </div>
+
+        <button class="continue-button" onclick="continueDeposit()">
+          Continue
+        </button>
+      </section>
+
+      <section class="card">
+        <h2>Deposit Information</h2>
+
+        <div class="info-grid">
+          <div class="info-box">
+            <span>Minimum Deposit</span>
+            <strong>$50</strong>
+          </div>
+
+          <div class="info-box">
+            <span>Processing</span>
+            <strong>Account Request</strong>
+          </div>
+
+          <div class="info-box">
+            <span>Supported Assets</span>
+            <strong>BTC • ETH • LTC • TRX • BNB</strong>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      /* =========================
+     MENU
+  ========================= */
+
+      function openMenu() {
+        document.getElementById("sidebar").classList.add("active");
+      }
+
+      function closeMenu() {
+        document.getElementById("sidebar").classList.remove("active");
+      }
+
+      /* =========================
+     MARKET DATA
+     
+     Replace these values with
+     prices supplied by your
+     authorized market-data API.
+  ========================= */
+
+      const prices = {
+        BTC: 104821.4,
+
+        ETH: 3842.19,
+
+        LTC: 92.18,
+
+        TRON: 0.34,
+
+        BNB: 0,
+      };
+
+      /* =========================
+     TEST-ONLY PLACEHOLDERS
+  ========================= */
+
+      const addresses = {
+        BTC: "bc1q6jj4japnfn8wxxw09qymvttufh2npwvhxlu9ft",
+
+        ETH: "0x5cE36074C0f4b599f42FebDa005b15818737776d",
+
+        LTC: "ltc1qwwlkx8z0lzmrhmc3t68ra8f7vkh7mjrxm5a2z2",
+
+        TRON: "TAYe9ZN5U1EeumFZh636KeJSFWhE6Zy2Ne",
+
+        BNB: "0x5cE36074C0f4b599f42FebDa005b15818737776d",
+      };
+
+      /* =========================
+     LABELS
+  ========================= */
+
+      const labels = {
+        BTC: "bitcoin(BTC) wallet",
+
+        ETH: "Etherium wallet",
+
+        LTC: "Litecoin Address",
+
+        TRON: "TRON (TRX) Address",
+
+        BNB: "BNB smart chain (BNB) wallet",
+      };
+
+      /* =========================
+     FORMAT PRICE
+  ========================= */
+
+      function formatPrice(price) {
+        if (!price || price <= 0) {
+          return "Unavailable";
+        }
+
+        if (price < 1) {
+          return "$" + price.toFixed(6);
+        }
+
+        return (
+          "$" +
+          price.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
+        );
+      }
+
+      /* =========================
+     UPDATE ASSET
+  ========================= */
+
+      function updateAsset() {
+        const asset = document.getElementById("asset").value;
+
+        document.getElementById("walletLabel").textContent = labels[asset];
+
+        document.getElementById("walletAddress").value = addresses[asset];
+
+        document.getElementById("currentAsset").textContent = asset;
+
+        document.getElementById("assetName").textContent = asset;
+
+        document.getElementById("currentPrice").textContent = formatPrice(
+          prices[asset],
+        );
+
+        document.getElementById("copyStatus").textContent = "";
+
+        calculate();
+      }
+
+      /* =========================
+     CALCULATOR
+  ========================= */
+
+      function calculate() {
+        const amount = parseFloat(document.getElementById("amount").value) || 0;
+
+        const asset = document.getElementById("asset").value;
+
+        const price = prices[asset];
+
+        document.getElementById("usdValue").textContent =
+          "$" + amount.toFixed(2);
+
+        document.getElementById("assetName").textContent = asset;
+
+        document.getElementById("currentAsset").textContent = asset;
+
+        document.getElementById("currentPrice").textContent =
+          formatPrice(price);
+
+        if (!price || price <= 0) {
+          document.getElementById("assetValue").textContent =
+            "Price unavailable";
+
+          return;
+        }
+
+        const converted = amount / price;
+
+        let decimals = 8;
+
+        if (asset === "TRON") {
+          decimals = 6;
+        }
+
+        if (asset === "BNB") {
+          decimals = 8;
+        }
+
+        document.getElementById("assetValue").textContent =
+          converted.toFixed(decimals) + " " + asset;
+      }
+
+      /* =========================
+     COPY
+  ========================= */
+
+      async function copyAddress() {
+        const address = document.getElementById("walletAddress").value;
+
+        const status = document.getElementById("copyStatus");
+
+        try {
+          await navigator.clipboard.writeText(address);
+
+          status.textContent = "Address copied";
+        } catch (error) {
+          status.textContent =
+            "Copy failed. Please select the address manually.";
+        }
+      }
+
+      /* =========================
+     CONTINUE
+  ========================= */
+
+      function continueDeposit() {
+        const amount = parseFloat(document.getElementById("amount").value) || 0;
+
+        if (amount < 50) {
+          alert("Please enter a deposit amount of at least $50.");
+
+          return;
+        }
+
+        const asset = document.getElementById("asset").value;
+
+        alert("Your " + asset + " deposit request has been prepared.");
+      }
+
+      /* =========================
+     INITIAL LOAD
+  ========================= */
+
+      updateAsset();
+    </script>
+  </body>
+</html>

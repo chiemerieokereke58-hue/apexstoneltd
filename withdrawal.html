@@ -1,0 +1,1135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Withdrawal | ApexStone Capitals</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background: #06101d;
+
+        color: #ffffff;
+
+        min-height: 100vh;
+
+        overflow-x: hidden;
+      }
+
+      /* MARKET BACKGROUND */
+
+      body::before {
+        content: "";
+
+        position: fixed;
+
+        inset: 0;
+
+        background:
+          linear-gradient(rgba(5, 20, 35, 0.78), rgba(5, 20, 35, 0.91)),
+          url("https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=2000&q=80")
+            center/cover no-repeat;
+
+        z-index: -3;
+      }
+
+      /* MOVING GRID */
+
+      body::after {
+        content: "";
+
+        position: fixed;
+
+        inset: 0;
+
+        background-image:
+          linear-gradient(rgba(90, 150, 190, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(90, 150, 190, 0.05) 1px, transparent 1px);
+
+        background-size: 50px 50px;
+
+        animation: gridMove 12s linear infinite;
+
+        z-index: -2;
+      }
+
+      @keyframes gridMove {
+        from {
+          background-position: 0 0;
+        }
+
+        to {
+          background-position: 50px 50px;
+        }
+      }
+
+      /* HEADER */
+
+      header {
+        height: 70px;
+
+        padding: 0 25px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        background: rgba(5, 18, 32, 0.88);
+
+        border-bottom: 1px solid rgba(120, 180, 220, 0.15);
+
+        backdrop-filter: blur(15px);
+
+        position: sticky;
+
+        top: 0;
+
+        z-index: 100;
+      }
+
+      .logo {
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        font-size: 20px;
+
+        font-weight: bold;
+      }
+
+      .logo-box {
+        width: 38px;
+
+        height: 38px;
+
+        border-radius: 10px;
+
+        border: 1px solid rgba(120, 190, 230, 0.5);
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        background: rgba(70, 130, 170, 0.15);
+      }
+
+      .menu-button {
+        width: 43px;
+
+        height: 43px;
+
+        border: none;
+
+        border-radius: 10px;
+
+        background: rgba(70, 130, 170, 0.18);
+
+        color: white;
+
+        font-size: 23px;
+
+        cursor: pointer;
+
+        transition: 0.3s;
+      }
+
+      .menu-button:hover {
+        background: rgba(90, 160, 205, 0.35);
+
+        transform: scale(1.05);
+      }
+
+      /* SIDEBAR */
+
+      .sidebar {
+        position: fixed;
+
+        top: 0;
+
+        right: -290px;
+
+        width: 290px;
+
+        height: 100vh;
+
+        background: rgba(5, 18, 32, 0.98);
+
+        backdrop-filter: blur(20px);
+
+        border-left: 1px solid rgba(100, 180, 220, 0.2);
+
+        padding: 85px 20px 20px;
+
+        z-index: 200;
+
+        transition: 0.35s ease;
+      }
+
+      .sidebar.active {
+        right: 0;
+      }
+
+      .sidebar a {
+        display: block;
+
+        text-decoration: none;
+
+        color: #d7e8f5;
+
+        padding: 15px;
+
+        border-radius: 10px;
+
+        margin-bottom: 8px;
+
+        transition: 0.3s;
+      }
+
+      .sidebar a:hover {
+        background: rgba(80, 150, 195, 0.18);
+
+        transform: translateX(-4px);
+      }
+
+      .close-menu {
+        position: absolute;
+
+        top: 22px;
+
+        right: 20px;
+
+        background: none;
+
+        border: none;
+
+        color: white;
+
+        font-size: 27px;
+
+        cursor: pointer;
+      }
+
+      /* MAIN */
+
+      main {
+        max-width: 1150px;
+
+        margin: auto;
+
+        padding: 45px 20px 70px;
+      }
+
+      .page-title {
+        margin-bottom: 30px;
+      }
+
+      .page-title h1 {
+        font-size: 34px;
+
+        margin-bottom: 8px;
+      }
+
+      .page-title p {
+        color: #9eb7c9;
+      }
+
+      /* GRID */
+
+      .dashboard-grid {
+        display: grid;
+
+        grid-template-columns: 1.4fr 0.8fr;
+
+        gap: 22px;
+      }
+
+      /* CARD */
+
+      .card {
+        background: rgba(7, 25, 42, 0.78);
+
+        border: 1px solid rgba(120, 190, 225, 0.16);
+
+        border-radius: 18px;
+
+        padding: 28px;
+
+        backdrop-filter: blur(18px);
+
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+
+        margin-bottom: 22px;
+
+        transition: 0.3s;
+      }
+
+      .card:hover {
+        border-color: rgba(120, 190, 225, 0.28);
+      }
+
+      .card h2 {
+        font-size: 21px;
+
+        margin-bottom: 22px;
+      }
+
+      /* BALANCE */
+
+      .balance-card {
+        background: linear-gradient(
+          135deg,
+          rgba(34, 73, 97, 0.38),
+          rgba(7, 25, 42, 0.82)
+        );
+      }
+
+      .balance-label {
+        color: #8faabd;
+
+        font-size: 13px;
+
+        margin-bottom: 8px;
+      }
+
+      .balance {
+        font-size: 34px;
+
+        font-weight: bold;
+
+        margin-bottom: 20px;
+      }
+
+      .balance-line {
+        height: 1px;
+
+        background: rgba(130, 180, 210, 0.12);
+
+        margin: 15px 0;
+      }
+
+      .balance-info {
+        display: flex;
+
+        justify-content: space-between;
+
+        color: #a9c0cf;
+
+        font-size: 13px;
+      }
+
+      /* FORM */
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+
+        margin-bottom: 8px;
+
+        color: #b9cfdd;
+
+        font-size: 14px;
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+
+        padding: 14px 15px;
+
+        border-radius: 10px;
+
+        border: 1px solid rgba(130, 190, 220, 0.18);
+
+        background: rgba(2, 12, 23, 0.72);
+
+        color: white;
+
+        outline: none;
+
+        font-size: 15px;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus {
+        border-color: rgba(110, 190, 230, 0.55);
+      }
+
+      .form-group select option {
+        background: #071827;
+
+        color: white;
+      }
+
+      /* MAX BUTTON */
+
+      .amount-wrapper {
+        position: relative;
+      }
+
+      .amount-wrapper input {
+        padding-right: 75px;
+      }
+
+      .max-button {
+        position: absolute;
+
+        right: 9px;
+
+        top: 8px;
+
+        height: 38px;
+
+        padding: 0 12px;
+
+        border: none;
+
+        border-radius: 8px;
+
+        background: rgba(70, 130, 170, 0.2);
+
+        color: #9bc5da;
+
+        cursor: pointer;
+      }
+
+      .max-button:hover {
+        background: rgba(80, 150, 195, 0.35);
+      }
+
+      /* ADDRESS */
+
+      .address-box {
+        display: none;
+
+        animation: fadeIn 0.3s ease;
+      }
+
+      .address-box.show {
+        display: block;
+      }
+
+      .address-note {
+        font-size: 12px;
+
+        color: #809aaa;
+
+        margin-top: 7px;
+
+        line-height: 1.5;
+      }
+
+      /* NETWORK */
+
+      .network-box {
+        padding: 14px;
+
+        border-radius: 10px;
+
+        background: rgba(30, 70, 95, 0.13);
+
+        border: 1px solid rgba(100, 180, 220, 0.1);
+
+        margin-bottom: 20px;
+      }
+
+      .network-box span {
+        display: block;
+
+        color: #839eae;
+
+        font-size: 12px;
+
+        margin-bottom: 5px;
+      }
+
+      .network-box strong {
+        font-size: 14px;
+      }
+
+      /* SUMMARY */
+
+      .summary {
+        background: rgba(2, 13, 24, 0.55);
+
+        border-radius: 13px;
+
+        padding: 20px;
+
+        border: 1px solid rgba(110, 180, 220, 0.12);
+
+        margin-top: 20px;
+      }
+
+      .summary h3 {
+        font-size: 16px;
+
+        margin-bottom: 17px;
+      }
+
+      .summary-row {
+        display: flex;
+
+        justify-content: space-between;
+
+        gap: 20px;
+
+        padding: 11px 0;
+
+        border-bottom: 1px solid rgba(120, 180, 210, 0.08);
+
+        font-size: 14px;
+      }
+
+      .summary-row:last-child {
+        border-bottom: none;
+      }
+
+      .summary-row span:first-child {
+        color: #91aaba;
+      }
+
+      .summary-row strong {
+        text-align: right;
+      }
+
+      .fee {
+        color: #d1b78a;
+      }
+
+      .receive {
+        color: #b8d4e3;
+
+        font-size: 17px;
+      }
+
+      /* WITHDRAW BUTTON */
+
+      .withdraw-button {
+        width: 100%;
+
+        padding: 15px;
+
+        border: none;
+
+        border-radius: 11px;
+
+        background: #315d78;
+
+        color: white;
+
+        font-size: 16px;
+
+        font-weight: bold;
+
+        cursor: pointer;
+
+        transition: 0.3s;
+
+        margin-top: 20px;
+      }
+
+      .withdraw-button:hover {
+        background: #407b9e;
+
+        transform: translateY(-2px);
+
+        box-shadow: 0 10px 25px rgba(40, 100, 140, 0.2);
+      }
+
+      /* METHOD CARDS */
+
+      .method {
+        padding: 15px;
+
+        border-radius: 11px;
+
+        background: rgba(30, 70, 95, 0.13);
+
+        border: 1px solid rgba(110, 180, 220, 0.1);
+
+        margin-bottom: 10px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+      }
+
+      .method-name {
+        font-weight: bold;
+
+        font-size: 14px;
+      }
+
+      .method-symbol {
+        color: #8caabc;
+
+        font-size: 12px;
+
+        margin-top: 4px;
+      }
+
+      .method-status {
+        font-size: 11px;
+
+        padding: 5px 8px;
+
+        border-radius: 6px;
+
+        background: rgba(80, 130, 160, 0.15);
+
+        color: #9bb9c9;
+      }
+
+      /* SECURITY */
+
+      .security {
+        display: flex;
+
+        gap: 12px;
+
+        padding: 16px;
+
+        border-radius: 11px;
+
+        background: rgba(30, 70, 95, 0.13);
+
+        border: 1px solid rgba(110, 180, 220, 0.1);
+
+        line-height: 1.5;
+      }
+
+      .security-icon {
+        font-size: 20px;
+      }
+
+      .security-text {
+        font-size: 12px;
+
+        color: #91aaba;
+      }
+
+      /* ACTIVITY */
+
+      .activity-row {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 15px;
+
+        padding: 15px 0;
+
+        border-bottom: 1px solid rgba(120, 180, 210, 0.08);
+      }
+
+      .activity-row:last-child {
+        border-bottom: none;
+      }
+
+      .activity-left strong {
+        display: block;
+
+        font-size: 14px;
+
+        margin-bottom: 5px;
+      }
+
+      .activity-left span {
+        color: #7f9aaa;
+
+        font-size: 12px;
+      }
+
+      .activity-status {
+        padding: 6px 9px;
+
+        border-radius: 7px;
+
+        font-size: 11px;
+
+        background: rgba(70, 110, 135, 0.16);
+
+        color: #9db9c8;
+      }
+
+      /* ANIMATION */
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+
+          transform: translateY(8px);
+        }
+
+        to {
+          opacity: 1;
+
+          transform: translateY(0);
+        }
+      }
+
+      /* MOBILE */
+
+      @media (max-width: 850px) {
+        .dashboard-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 600px) {
+        header {
+          padding: 0 15px;
+        }
+
+        main {
+          padding: 30px 14px 50px;
+        }
+
+        .page-title h1 {
+          font-size: 28px;
+        }
+
+        .card {
+          padding: 20px;
+        }
+
+        .balance {
+          font-size: 29px;
+        }
+
+        .activity-row {
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- HEADER -->
+
+    <header>
+      <div class="logo">
+        <div class="logo-box">AS</div>
+
+        ApexStone Capitals
+      </div>
+
+      <button class="menu-button" onclick="openMenu()">☰</button>
+    </header>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar" id="sidebar">
+      <button class="close-menu" onclick="closeMenu()">×</button>
+
+      <a href="dashboard.html"> Dashboard </a>
+
+      <a href="deposit.html"> Deposit </a>
+
+      <a href="withdrawal.html"> Withdrawal </a>
+      <a href="investment.html">investment plan</a>
+
+      <a href="transaction-history.html"> Transaction History </a>
+      <a href="settings.html">settings</a>
+
+      <a href="login.html"> Logout </a>
+    </aside>
+
+    <!-- MAIN -->
+
+    <main>
+      <div class="page-title">
+        <h1>Withdrawal</h1>
+
+        <p>Manage your withdrawal request and destination method.</p>
+      </div>
+
+      <div class="dashboard-grid">
+        <!-- LEFT -->
+
+        <div>
+          <!-- BALANCE -->
+
+          <section class="card balance-card">
+            <div class="balance-label">Available Balance</div>
+
+            <div class="balance">$12,850.00</div>
+
+            <div class="balance-line"></div>
+
+            <div class="balance-info">
+              <span> Account Status </span>
+
+              <strong> Active </strong>
+            </div>
+          </section>
+
+          <!-- WITHDRAWAL FORM -->
+
+          <section class="card">
+            <h2>Request Withdrawal</h2>
+
+            <div class="form-group">
+              <label> Withdrawal Amount (USD) </label>
+
+              <div class="amount-wrapper">
+                <input
+                  type="number"
+                  id="amount"
+                  min="1"
+                  placeholder="Enter amount"
+                  oninput="calculateWithdrawal()"
+                />
+
+                <button type="button" class="max-button" onclick="setMax()">
+                  MAX
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label> Withdrawal Method </label>
+
+              <select id="method" onchange="updateMethod()">
+                <option value="BTC">Bitcoin (BTC)</option>
+
+                <option value="ETH">Ethereum (ETH)</option>
+
+                <option value="LTC">Litecoin (LTC)</option>
+
+                <option value="USDT">Tether (USDT)</option>
+
+                <option value="TRX">Tron (TRX)</option>
+              </select>
+            </div>
+
+            <!-- NETWORK -->
+
+            <div class="network-box">
+              <span> Selected Network </span>
+
+              <strong id="network"> Bitcoin Network </strong>
+            </div>
+
+            <!-- ADDRESS -->
+
+            <div class="form-group address-box show" id="addressBox">
+              <label id="addressLabel"> Bitcoin Destination Address </label>
+
+              <input
+                type="text"
+                id="address"
+                placeholder="Enter destination address"
+              />
+
+              <div class="address-note">
+                Enter the destination address carefully. Always verify the
+                selected asset and network before submitting a request.
+              </div>
+            </div>
+
+            <!-- SUMMARY -->
+
+            <div class="summary">
+              <h3>Withdrawal Summary</h3>
+
+              <div class="summary-row">
+                <span> Requested Amount </span>
+
+                <strong id="summaryAmount"> $0.00 </strong>
+              </div>
+
+              <div class="summary-row">
+                <span> VAT / Service Charge (5%) </span>
+
+                <strong class="fee" id="fee"> $0.00 </strong>
+              </div>
+
+              <div class="summary-row">
+                <span> Estimated Amount </span>
+
+                <strong class="receive" id="receive"> $0.00 </strong>
+              </div>
+            </div>
+
+            <button class="withdraw-button" onclick="submitWithdrawal()">
+              Continue Withdrawal
+            </button>
+          </section>
+        </div>
+
+        <!-- RIGHT -->
+
+        <div>
+          <!-- METHODS -->
+
+          <section class="card">
+            <h2>Withdrawal Methods</h2>
+
+            <div class="method">
+              <div>
+                <div class="method-name">Bitcoin</div>
+
+                <div class="method-symbol">BTC</div>
+              </div>
+
+              <div class="method-status">Available</div>
+            </div>
+
+            <div class="method">
+              <div>
+                <div class="method-name">Ethereum</div>
+
+                <div class="method-symbol">ETH</div>
+              </div>
+
+              <div class="method-status">Available</div>
+            </div>
+
+            <div class="method">
+              <div>
+                <div class="method-name">Litecoin</div>
+
+                <div class="method-symbol">LTC</div>
+              </div>
+
+              <div class="method-status">Available</div>
+            </div>
+
+            <div class="method">
+              <div>
+                <div class="method-name">Tether</div>
+
+                <div class="method-symbol">USDT</div>
+              </div>
+
+              <div class="method-status">Available</div>
+            </div>
+
+            <div class="method">
+              <div>
+                <div class="method-name">Tron</div>
+
+                <div class="method-symbol">TRX</div>
+              </div>
+
+              <div class="method-status">Available</div>
+            </div>
+          </section>
+
+          <!-- SECURITY -->
+
+          <section class="card">
+            <h2>Withdrawal Security</h2>
+
+            <div class="security">
+              <div class="security-icon">🔐</div>
+
+              <div class="security-text">
+                Review your amount, withdrawal method, network and destination
+                address before submitting your request.
+              </div>
+            </div>
+          </section>
+
+          <!-- RECENT ACTIVITY -->
+
+          <section class="card">
+            <h2>Recent Withdrawals</h2>
+
+            <div class="activity-row">
+              <div class="activity-left">
+                <strong> BTC Withdrawal </strong>
+
+                <span> Recent activity </span>
+              </div>
+
+              <div class="activity-status">Pending</div>
+            </div>
+
+            <div class="activity-row">
+              <div class="activity-left">
+                <strong> USDT Withdrawal </strong>
+
+                <span> Previous request </span>
+              </div>
+
+              <div class="activity-status">Completed</div>
+            </div>
+
+            <div class="activity-row">
+              <div class="activity-left">
+                <strong> ETH Withdrawal </strong>
+
+                <span> Previous request </span>
+              </div>
+
+              <div class="activity-status">Completed</div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      /* SIDEBAR */
+
+      function openMenu() {
+        document.getElementById("sidebar").classList.add("active");
+      }
+
+      function closeMenu() {
+        document.getElementById("sidebar").classList.remove("active");
+      }
+
+      /* ACCOUNT BALANCE */
+
+      const availableBalance = 12850;
+
+      /* WITHDRAWAL CALCULATOR */
+
+      function calculateWithdrawal() {
+        const amount = parseFloat(document.getElementById("amount").value) || 0;
+
+        const fee = amount * 0.05;
+
+        const receive = amount - fee;
+
+        document.getElementById("summaryAmount").textContent =
+          "$" + amount.toFixed(2);
+
+        document.getElementById("fee").textContent = "$" + fee.toFixed(2);
+
+        document.getElementById("receive").textContent =
+          "$" + receive.toFixed(2);
+      }
+
+      /* MAX */
+
+      function setMax() {
+        document.getElementById("amount").value = availableBalance;
+
+        calculateWithdrawal();
+      }
+
+      /* METHODS */
+
+      const methodData = {
+        BTC: {
+          name: "Bitcoin Destination Address",
+
+          network: "Bitcoin Network",
+        },
+
+        ETH: {
+          name: "Ethereum Destination Address",
+
+          network: "Ethereum Network",
+        },
+
+        LTC: {
+          name: "Litecoin Destination Address",
+
+          network: "Litecoin Network",
+        },
+
+        USDT: {
+          name: "Tether (USDT) Destination Address",
+
+          network: "USDT Network",
+        },
+
+        TRX: {
+          name: "Tron (TRX) Destination Address",
+
+          network: "Tron Network",
+        },
+      };
+
+      function updateMethod() {
+        const method = document.getElementById("method").value;
+
+        document.getElementById("addressLabel").textContent =
+          methodData[method].name;
+
+        document.getElementById("network").textContent =
+          methodData[method].network;
+
+        document.getElementById("address").value = "";
+      }
+
+      /* SUBMIT */
+
+      function submitWithdrawal() {
+        const amount = parseFloat(document.getElementById("amount").value) || 0;
+
+        const method = document.getElementById("method").value;
+
+        const address = document.getElementById("address").value.trim();
+
+        if (amount <= 0) {
+          alert("Please enter a withdrawal amount.");
+
+          return;
+        }
+
+        if (amount > availableBalance) {
+          alert("The requested amount exceeds the available balance.");
+
+          return;
+        }
+
+        if (!address) {
+          alert("Please enter a destination address.");
+
+          return;
+        }
+
+        const fee = amount * 0.05;
+
+        const receive = amount - fee;
+
+        alert(
+          "Withdrawal request prepared.\n\n" +
+            "Method: " +
+            method +
+            "\n" +
+            "Amount: $" +
+            amount.toFixed(2) +
+            "\n" +
+            "5% Charge: $" +
+            fee.toFixed(2) +
+            "\n" +
+            "Estimated Amount: $" +
+            receive.toFixed(2),
+        );
+      }
+
+      /* INITIAL */
+
+      calculateWithdrawal();
+    </script>
+  </body>
+</html>

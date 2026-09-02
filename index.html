@@ -1,0 +1,3263 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="author" content="ApexStone Capitals" />
+    <meta
+      name="description"
+      content="ApexStone Capitals — Market intelligence, investment education and portfolio technology."
+    />
+
+    <title>ApexStone Capitals | Market Intelligence</title>
+
+    <style>
+      /* =====================================================
+         RESET
+      ===================================================== */
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        color: #10283c;
+        background: #071722;
+        overflow-x: hidden;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      button {
+        font-family: inherit;
+        cursor: pointer;
+      }
+
+      /* =====================================================
+         COLORS
+      ===================================================== */
+
+      :root {
+        --blue: #087ea4;
+        --blue2: #0e9dcc;
+        --dark: #082338;
+        --text: #17354b;
+        --muted: #678296;
+
+        --glass: rgba(255, 255, 255, 0.6);
+        --glass2: rgba(255, 255, 255, 0.35);
+
+        --border: rgba(255, 255, 255, 0.75);
+
+        --shadow: 0 25px 70px rgba(31, 91, 119, 0.15);
+      }
+
+      /* =====================================================
+         GLOBAL MARKET BACKGROUND
+      ===================================================== */
+
+      body::before {
+        content: "";
+
+        position: fixed;
+        inset: 0;
+
+        z-index: -5;
+
+        background:
+          linear-gradient(
+            135deg,
+            rgba(4, 24, 38, 0.91),
+            rgba(5, 47, 65, 0.82),
+            rgba(4, 19, 31, 0.94)
+          ),
+          url("https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=2200&q=90");
+
+        background-size: cover;
+        background-position: center;
+
+        opacity: 1;
+      }
+
+      body::after {
+        content: "";
+
+        position: fixed;
+        inset: 0;
+
+        z-index: -4;
+        pointer-events: none;
+
+        opacity: 0.2;
+
+        background-image:
+          linear-gradient(rgba(32, 171, 211, 0.16) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(32, 171, 211, 0.16) 1px, transparent 1px);
+
+        background-size: 50px 50px;
+
+        animation: gridMove 20s linear infinite;
+      }
+
+      @keyframes gridMove {
+        from {
+          background-position: 0 0;
+        }
+
+        to {
+          background-position: 50px 50px;
+        }
+      }
+
+      /* =====================================================
+         CONTAINER
+      ===================================================== */
+
+      .container {
+        width: 92%;
+        max-width: 1250px;
+        margin: auto;
+      }
+
+      /* =====================================================
+         HEADER
+      ===================================================== */
+
+      header {
+        position: sticky;
+        top: 0;
+
+        z-index: 1000;
+
+        background: rgba(5, 25, 39, 0.78);
+
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+
+        border-bottom: 1px solid rgba(96, 193, 222, 0.18);
+
+        box-shadow: 0 8px 35px rgba(0, 0, 0, 0.18);
+      }
+
+      .navbar {
+        height: 78px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        position: relative;
+      }
+
+      /* =====================================================
+         LOGO
+      ===================================================== */
+
+      .logo {
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        font-weight: 900;
+
+        font-size: 18px;
+
+        color: white;
+
+        flex-shrink: 0;
+      }
+
+      .logo-box {
+        width: 45px;
+        height: 45px;
+
+        border-radius: 13px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        overflow: hidden;
+
+        background: linear-gradient(145deg, #ffffff, #d8f1f8);
+
+        border: 1px solid rgba(255, 255, 255, 0.95);
+
+        box-shadow: 0 10px 30px rgba(10, 100, 130, 0.15);
+
+        flex-shrink: 0;
+      }
+
+      .logo-box img {
+        width: 100%;
+        height: 100%;
+
+        object-fit: contain;
+      }
+
+      .logo-placeholder {
+        color: var(--blue);
+
+        font-size: 9px;
+
+        font-weight: 900;
+
+        text-align: center;
+
+        line-height: 1.1;
+      }
+
+      .logo-text span {
+        color: #24b8e4;
+      }
+
+      /* =====================================================
+         NAVIGATION
+      ===================================================== */
+
+      .nav-links {
+        display: flex;
+
+        align-items: center;
+
+        gap: 30px;
+
+        list-style: none;
+      }
+
+      .nav-links a {
+        color: #a9c4d1;
+
+        font-size: 13px;
+
+        font-weight: 800;
+
+        transition: 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: #32c2e9;
+
+        transform: translateY(-2px);
+      }
+
+      /* =====================================================
+         BUTTONS
+      ===================================================== */
+
+      .blue-btn {
+        display: inline-block;
+
+        padding: 12px 20px;
+
+        border: 0;
+
+        border-radius: 10px;
+
+        color: white;
+
+        background: linear-gradient(135deg, #0997c2, #066f93);
+
+        font-size: 12px;
+
+        font-weight: 900;
+
+        box-shadow: 0 12px 30px rgba(0, 126, 164, 0.22);
+
+        transition: 0.35s;
+
+        white-space: nowrap;
+      }
+
+      .blue-btn:hover {
+        transform: translateY(-4px) scale(1.02);
+
+        box-shadow: 0 18px 40px rgba(0, 126, 164, 0.3);
+      }
+
+      .login-btn {
+        padding: 11px 15px;
+
+        font-size: 12px;
+
+        font-weight: 800;
+
+        color: #b5cbd5;
+
+        white-space: nowrap;
+      }
+
+      .nav-actions {
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        flex-shrink: 0;
+      }
+
+      /* =====================================================
+         HAMBURGER
+      ===================================================== */
+
+      .menu-btn {
+        display: none;
+
+        border: 0;
+
+        background: transparent;
+
+        color: #28b8df;
+
+        font-size: 25px;
+
+        line-height: 1;
+
+        padding: 4px;
+
+        position: relative;
+
+        z-index: 1100;
+      }
+
+      /* =====================================================
+         MOBILE MENU
+      ===================================================== */
+
+      .nav-links.mobile-open {
+        display: flex !important;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        position: absolute;
+
+        top: 78px;
+
+        left: 0;
+
+        right: 0;
+
+        padding: 25px;
+
+        background: rgba(4, 27, 42, 0.97);
+
+        backdrop-filter: blur(20px);
+
+        -webkit-backdrop-filter: blur(20px);
+
+        border-bottom: 1px solid rgba(45, 177, 213, 0.2);
+
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+
+        gap: 20px;
+
+        z-index: 1050;
+      }
+
+      .nav-links.mobile-open li {
+        width: 100%;
+      }
+
+      .nav-links.mobile-open a {
+        display: block;
+
+        width: 100%;
+
+        padding: 5px 0;
+
+        font-size: 14px;
+      }
+
+      /* =====================================================
+         HERO
+      ===================================================== */
+
+      .hero {
+        min-height: 700px;
+
+        display: flex;
+
+        align-items: center;
+
+        position: relative;
+
+        overflow: hidden;
+
+        background:
+          linear-gradient(
+            100deg,
+            rgba(4, 25, 39, 0.95),
+            rgba(5, 49, 67, 0.82),
+            rgba(4, 25, 38, 0.67)
+          ),
+          url("https://images.unsplash.com/photo-1642790551116-18e150f248e1?auto=format&fit=crop&w=2200&q=90");
+
+        background-size: cover;
+
+        background-position: center;
+      }
+
+      .hero::before {
+        content: "";
+
+        position: absolute;
+
+        width: 700px;
+        height: 700px;
+
+        right: -300px;
+        top: -200px;
+
+        border-radius: 50%;
+
+        background: radial-gradient(
+          circle,
+          rgba(0, 157, 204, 0.2),
+          transparent 65%
+        );
+
+        animation: floatCircle 8s ease-in-out infinite;
+      }
+
+      @keyframes floatCircle {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+
+        50% {
+          transform: translateY(25px);
+        }
+      }
+
+      .hero-content {
+        display: grid;
+
+        grid-template-columns: 1.1fr 0.9fr;
+
+        align-items: center;
+
+        gap: 70px;
+
+        position: relative;
+
+        z-index: 2;
+      }
+
+      .badge {
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        padding: 8px 13px;
+
+        border-radius: 30px;
+
+        background: rgba(22, 95, 119, 0.28);
+
+        border: 1px solid rgba(92, 202, 232, 0.22);
+
+        color: #42c5e9;
+
+        font-size: 10px;
+
+        font-weight: 900;
+
+        letter-spacing: 1.3px;
+
+        margin-bottom: 22px;
+
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.16);
+      }
+
+      .badge-dot {
+        width: 7px;
+        height: 7px;
+
+        border-radius: 50%;
+
+        background: #10c2ed;
+
+        box-shadow: 0 0 12px #10c2ed;
+      }
+
+      .hero h1 {
+        font-size: clamp(45px, 5.5vw, 74px);
+
+        line-height: 1.02;
+
+        letter-spacing: -3px;
+
+        color: #f2fbff;
+
+        margin-bottom: 25px;
+      }
+
+      .hero h1 span {
+        color: #22b6df;
+      }
+
+      .hero-note {
+        max-width: 680px;
+
+        color: #b2cbd5;
+
+        font-size: 15px;
+
+        line-height: 1.9;
+
+        margin-bottom: 30px;
+      }
+
+      .hero-buttons {
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 12px;
+      }
+
+      .outline-btn {
+        padding: 12px 20px;
+
+        border-radius: 10px;
+
+        border: 1px solid rgba(53, 190, 225, 0.28);
+
+        background: rgba(8, 63, 82, 0.42);
+
+        color: #b9e1ec;
+
+        font-size: 12px;
+
+        font-weight: 900;
+
+        transition: 0.35s;
+      }
+
+      .outline-btn:hover {
+        transform: translateY(-4px);
+
+        background: rgba(19, 99, 123, 0.5);
+
+        border-color: rgba(8, 157, 204, 0.45);
+      }
+
+      /* =====================================================
+         MARKET TERMINAL
+      ===================================================== */
+
+      .market-terminal {
+        padding: 25px;
+
+        border-radius: 25px;
+
+        background: linear-gradient(
+          145deg,
+          rgba(10, 55, 73, 0.75),
+          rgba(3, 27, 42, 0.72)
+        );
+
+        border: 1px solid rgba(108, 214, 238, 0.2);
+
+        backdrop-filter: blur(25px);
+
+        box-shadow: 0 30px 90px rgba(0, 0, 0, 0.35);
+
+        position: relative;
+
+        overflow: hidden;
+
+        transition: 0.4s;
+      }
+
+      .market-terminal:hover {
+        transform: translateY(-8px) scale(1.01);
+
+        box-shadow: 0 40px 100px rgba(0, 130, 170, 0.25);
+      }
+
+      .market-terminal::after {
+        content: "";
+
+        position: absolute;
+
+        width: 180px;
+        height: 180px;
+
+        right: -70px;
+        bottom: -80px;
+
+        border-radius: 50%;
+
+        background: rgba(8, 157, 204, 0.1);
+      }
+
+      .terminal-top {
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        padding-bottom: 18px;
+
+        margin-bottom: 10px;
+
+        border-bottom: 1px solid rgba(77, 183, 211, 0.15);
+      }
+
+      .terminal-top h2 {
+        font-size: 20px;
+
+        color: #e9faff;
+      }
+
+      .market-status {
+        padding: 6px 10px;
+
+        border-radius: 20px;
+
+        background: rgba(14, 157, 204, 0.12);
+
+        color: #22b9e2;
+
+        font-size: 8px;
+
+        font-weight: 900;
+      }
+
+      .asset {
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        padding: 16px 0;
+
+        border-bottom: 1px solid rgba(88, 186, 212, 0.1);
+
+        transition: 0.3s;
+      }
+
+      .asset:hover {
+        padding-left: 7px;
+        padding-right: 7px;
+
+        background: rgba(30, 128, 156, 0.12);
+
+        border-radius: 10px;
+      }
+
+      .asset-left {
+        display: flex;
+
+        align-items: center;
+
+        gap: 11px;
+      }
+
+      .asset-icon {
+        width: 40px;
+        height: 40px;
+
+        border-radius: 12px;
+
+        display: flex;
+
+        justify-content: center;
+
+        align-items: center;
+
+        background: linear-gradient(145deg, #0c5c78, #082d3f);
+
+        color: #50c8e9;
+
+        font-size: 9px;
+
+        font-weight: 1000;
+
+        border: 1px solid rgba(80, 200, 233, 0.2);
+      }
+
+      .asset-name strong {
+        display: block;
+
+        font-size: 12px;
+
+        color: #e4f6fb;
+      }
+
+      .asset-name small {
+        color: #789daa;
+
+        font-size: 9px;
+      }
+
+      .asset-value {
+        text-align: right;
+      }
+
+      .asset-value strong {
+        display: block;
+
+        font-size: 12px;
+
+        color: #e4f6fb;
+      }
+
+      .up {
+        color: #20c995;
+
+        font-size: 10px;
+
+        font-weight: 900;
+      }
+
+      .chart {
+        height: 80px;
+
+        margin-top: 18px;
+
+        border-radius: 12px;
+
+        overflow: hidden;
+
+        position: relative;
+
+        background: linear-gradient(
+          180deg,
+          rgba(8, 157, 204, 0.1),
+          rgba(8, 157, 204, 0.02)
+        );
+      }
+
+      .chart svg {
+        width: 100%;
+
+        height: 100%;
+      }
+
+      /* =====================================================
+         TRUST
+      ===================================================== */
+
+      .trust {
+        background: rgba(3, 28, 42, 0.75);
+
+        backdrop-filter: blur(20px);
+
+        border-top: 1px solid rgba(74, 187, 215, 0.15);
+        border-bottom: 1px solid rgba(74, 187, 215, 0.15);
+
+        padding: 22px 0;
+      }
+
+      .trust-inner {
+        display: flex;
+
+        justify-content: center;
+
+        flex-wrap: wrap;
+
+        gap: 45px;
+
+        color: #7fa7b7;
+
+        font-size: 9px;
+
+        font-weight: 900;
+
+        letter-spacing: 1.4px;
+      }
+
+      /* =====================================================
+         GENERAL SECTIONS
+      ===================================================== */
+
+      section {
+        padding: 100px 0;
+      }
+
+      .section-heading {
+        max-width: 720px;
+
+        text-align: center;
+
+        margin: 0 auto 50px;
+      }
+
+      .section-label {
+        color: #28b9e2;
+
+        font-size: 10px;
+
+        font-weight: 900;
+
+        letter-spacing: 2px;
+
+        margin-bottom: 10px;
+      }
+
+      .section-heading h2 {
+        color: #eafaff;
+
+        font-size: 40px;
+
+        line-height: 1.15;
+
+        margin-bottom: 14px;
+      }
+
+      .section-heading p {
+        color: #8daebb;
+
+        font-size: 13px;
+
+        line-height: 1.8;
+      }
+
+      /* =====================================================
+         SCROLL ANIMATION
+      ===================================================== */
+
+      .reveal {
+        opacity: 0;
+
+        transform: translateY(50px);
+
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s ease;
+      }
+
+      .reveal.active {
+        opacity: 1;
+
+        transform: translateY(0);
+      }
+
+      /* =====================================================
+         GLASS CARDS
+      ===================================================== */
+
+      .cards {
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 20px;
+      }
+
+      .glass-card {
+        padding: 30px;
+
+        border-radius: 20px;
+
+        background: linear-gradient(
+          145deg,
+          rgba(11, 68, 88, 0.7),
+          rgba(4, 34, 50, 0.65)
+        );
+
+        border: 1px solid rgba(107, 210, 235, 0.18);
+
+        backdrop-filter: blur(20px);
+
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+
+        transition: 0.4s;
+      }
+
+      .glass-card:hover {
+        transform: translateY(-10px) scale(1.015);
+
+        box-shadow: 0 35px 80px rgba(0, 130, 170, 0.2);
+
+        border-color: rgba(8, 157, 204, 0.35);
+      }
+
+      .icon {
+        width: 52px;
+        height: 52px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 15px;
+
+        background: linear-gradient(145deg, #0c637f, #082e40);
+
+        color: #4ec9e9;
+
+        font-size: 21px;
+
+        margin-bottom: 20px;
+
+        box-shadow: 0 10px 25px rgba(8, 126, 164, 0.1);
+      }
+
+      .glass-card h3 {
+        font-size: 17px;
+
+        color: #dff6fc;
+
+        margin-bottom: 9px;
+      }
+
+      .glass-card p {
+        color: #8ba8b5;
+
+        font-size: 12px;
+
+        line-height: 1.8;
+      }
+
+      /* =====================================================
+         ASSET CLASSES
+      ===================================================== */
+
+      .asset-section {
+        background:
+          linear-gradient(rgba(4, 31, 45, 0.82), rgba(3, 28, 43, 0.88)),
+          url("https://images.unsplash.com/photo-1559526324-593bc073d938?auto=format&fit=crop&w=2200&q=90");
+
+        background-size: cover;
+
+        background-position: center;
+
+        border-top: 1px solid rgba(100, 201, 226, 0.15);
+
+        border-bottom: 1px solid rgba(100, 201, 226, 0.15);
+      }
+
+      .asset-grid {
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 20px;
+      }
+
+      .asset-card {
+        min-height: 280px;
+
+        padding: 28px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        justify-content: flex-end;
+
+        border-radius: 22px;
+
+        overflow: hidden;
+
+        position: relative;
+
+        color: white;
+
+        background-size: cover;
+
+        background-position: center;
+
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+
+        transition: 0.5s;
+      }
+
+      .asset-card::before {
+        content: "";
+
+        position: absolute;
+
+        inset: 0;
+
+        background: linear-gradient(transparent 20%, rgba(2, 19, 29, 0.9));
+      }
+
+      .asset-card > * {
+        position: relative;
+
+        z-index: 2;
+      }
+
+      .asset-card:hover {
+        transform: translateY(-10px) scale(1.02);
+
+        box-shadow: 0 35px 80px rgba(0, 130, 170, 0.25);
+      }
+
+      .real-estate {
+        background-image: url("https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=85");
+      }
+
+      .energy {
+        background-image: url("https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&w=1200&q=85");
+      }
+
+      .markets-card {
+        background-image: url("https://images.unsplash.com/photo-1642790551116-18e150f248e1?auto=format&fit=crop&w=1200&q=85");
+      }
+
+      .asset-card h3 {
+        font-size: 22px;
+
+        margin-bottom: 7px;
+      }
+
+      .asset-card p {
+        color: #dcebf1;
+
+        font-size: 11px;
+
+        line-height: 1.7;
+      }
+
+      /* =====================================================
+         TESTIMONIAL
+      ===================================================== */
+
+      .testimonial-section {
+        overflow: hidden;
+
+        background:
+          linear-gradient(rgba(4, 28, 42, 0.84), rgba(3, 24, 37, 0.9)),
+          url("https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=2200&q=90");
+
+        background-size: cover;
+
+        background-position: center;
+      }
+
+      .testimonial-track {
+        display: flex;
+
+        width: max-content;
+
+        gap: 20px;
+
+        animation: testimonials 35s linear infinite;
+      }
+
+      .testimonial-track:hover {
+        animation-play-state: paused;
+      }
+
+      @keyframes testimonials {
+        from {
+          transform: translateX(0);
+        }
+
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      .testimonial {
+        width: 330px;
+
+        padding: 25px;
+
+        border-radius: 19px;
+
+        background: rgba(8, 51, 68, 0.76);
+
+        border: 1px solid rgba(108, 211, 235, 0.18);
+
+        backdrop-filter: blur(18px);
+
+        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.25);
+
+        transition: 0.4s;
+
+        position: relative;
+      }
+
+      .testimonial:hover {
+        transform: translateY(-10px);
+
+        border-color: rgba(35, 192, 226, 0.4);
+
+        box-shadow: 0 25px 55px rgba(0, 140, 180, 0.22);
+      }
+
+      .testimonial-profile {
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        margin-top: 17px;
+      }
+
+      .testimonial-profile img {
+        width: 43px;
+
+        height: 43px;
+
+        border-radius: 50%;
+
+        object-fit: cover;
+
+        border: 2px solid rgba(45, 192, 225, 0.55);
+
+        box-shadow: 0 0 20px rgba(22, 174, 211, 0.15);
+
+        transition: 0.45s;
+      }
+
+      .testimonial:hover .testimonial-profile img {
+        transform: scale(1.13) rotate(3deg);
+
+        box-shadow: 0 0 25px rgba(34, 191, 226, 0.4);
+      }
+
+      .stars {
+        color: #32c1e6;
+
+        letter-spacing: 3px;
+
+        font-size: 11px;
+
+        margin-bottom: 12px;
+      }
+
+      .testimonial p {
+        color: #a6c2cc;
+
+        font-size: 12px;
+
+        line-height: 1.8;
+
+        margin-bottom: 0;
+      }
+
+      .testimonial strong {
+        color: #e0f6fc;
+
+        font-size: 12px;
+      }
+
+      .testimonial small {
+        display: block;
+
+        color: #829fab;
+
+        font-size: 9px;
+
+        margin-top: 3px;
+      }
+
+      .demo-note {
+        text-align: center;
+
+        margin-top: 25px;
+
+        color: #7a919f;
+
+        font-size: 9px;
+      }
+
+      /* =====================================================
+         MARKET INSIGHTS
+      ===================================================== */
+
+      .insights {
+        display: grid;
+
+        grid-template-columns: 1.2fr 0.8fr;
+
+        gap: 25px;
+      }
+
+      .insight-main {
+        padding: 35px;
+
+        border-radius: 23px;
+
+        background: rgba(7, 52, 68, 0.73);
+
+        border: 1px solid rgba(106, 208, 233, 0.17);
+
+        backdrop-filter: blur(20px);
+
+        box-shadow: 0 25px 70px rgba(0, 0, 0, 0.22);
+      }
+
+      .insight-main h3 {
+        font-size: 23px;
+
+        color: #e1f6fb;
+
+        margin-bottom: 13px;
+      }
+
+      .insight-main p {
+        color: #8faeba;
+
+        font-size: 13px;
+
+        line-height: 1.9;
+      }
+
+      .insight-list {
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 15px;
+      }
+
+      .insight-item {
+        padding: 20px;
+
+        border-radius: 17px;
+
+        background: rgba(7, 52, 68, 0.7);
+
+        border: 1px solid rgba(108, 211, 235, 0.15);
+
+        transition: 0.35s;
+      }
+
+      .insight-item:hover {
+        transform: translateX(7px);
+
+        box-shadow: 0 15px 35px rgba(0, 140, 180, 0.15);
+      }
+
+      .insight-item strong {
+        display: block;
+
+        color: #dff5fb;
+
+        font-size: 13px;
+
+        margin-bottom: 5px;
+      }
+
+      .insight-item span {
+        color: #829fab;
+
+        font-size: 10px;
+      }
+
+      /* =====================================================
+         STATS
+      ===================================================== */
+
+      .stats {
+        display: grid;
+
+        grid-template-columns: repeat(4, 1fr);
+
+        gap: 18px;
+
+        margin-top: 30px;
+      }
+
+      .stat {
+        padding: 25px;
+
+        text-align: center;
+
+        border-radius: 18px;
+
+        background: rgba(7, 50, 66, 0.65);
+
+        border: 1px solid rgba(100, 202, 227, 0.15);
+
+        transition: 0.35s;
+      }
+
+      .stat:hover {
+        transform: translateY(-7px);
+
+        background: rgba(10, 69, 88, 0.8);
+      }
+
+      .stat strong {
+        display: block;
+
+        color: #24b8e1;
+
+        font-size: 27px;
+
+        margin-bottom: 5px;
+      }
+
+      .stat span {
+        color: #7899a6;
+
+        font-size: 10px;
+
+        font-weight: 800;
+      }
+
+      /* =====================================================
+         OWNER PROFILE
+      ===================================================== */
+
+      .owner-section {
+        position: relative;
+
+        overflow: hidden;
+
+        background:
+          linear-gradient(120deg, rgba(3, 24, 38, 0.95), rgba(5, 53, 70, 0.88)),
+          url("https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=2200&q=90");
+
+        background-size: cover;
+
+        background-position: center;
+
+        border-top: 1px solid rgba(93, 205, 232, 0.16);
+
+        border-bottom: 1px solid rgba(93, 205, 232, 0.16);
+      }
+
+      .owner-section::before {
+        content: "";
+
+        position: absolute;
+
+        width: 500px;
+
+        height: 500px;
+
+        left: -250px;
+
+        top: -180px;
+
+        border-radius: 50%;
+
+        background: radial-gradient(
+          circle,
+          rgba(0, 176, 218, 0.18),
+          transparent 68%
+        );
+
+        animation: ownerGlow 8s ease-in-out infinite;
+      }
+
+      @keyframes ownerGlow {
+        0%,
+        100% {
+          transform: translate(0, 0);
+        }
+
+        50% {
+          transform: translate(40px, 25px);
+        }
+      }
+
+      .owner-wrap {
+        display: grid;
+
+        grid-template-columns: 0.75fr 1.25fr;
+
+        align-items: center;
+
+        gap: 65px;
+
+        position: relative;
+
+        z-index: 2;
+      }
+
+      .owner-image-area {
+        position: relative;
+
+        display: flex;
+
+        justify-content: center;
+      }
+
+      .owner-image-ring {
+        width: 330px;
+
+        height: 330px;
+
+        padding: 10px;
+
+        border-radius: 50%;
+
+        background: linear-gradient(
+          145deg,
+          rgba(41, 201, 235, 0.9),
+          rgba(5, 79, 105, 0.45),
+          rgba(41, 201, 235, 0.7)
+        );
+
+        box-shadow:
+          0 0 0 1px rgba(95, 213, 237, 0.15),
+          0 30px 80px rgba(0, 0, 0, 0.45),
+          0 0 70px rgba(10, 174, 211, 0.13);
+
+        animation: ownerFloat 6s ease-in-out infinite;
+      }
+
+      @keyframes ownerFloat {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+
+        50% {
+          transform: translateY(-12px);
+        }
+      }
+
+      .owner-image-ring img {
+        width: 100%;
+
+        height: 100%;
+
+        object-fit: cover;
+
+        border-radius: 50%;
+
+        display: block;
+
+        border: 5px solid rgba(4, 30, 44, 0.9);
+      }
+
+      .owner-status {
+        position: absolute;
+
+        right: 10px;
+
+        bottom: 32px;
+
+        padding: 9px 14px;
+
+        border-radius: 30px;
+
+        background: rgba(4, 40, 55, 0.92);
+
+        border: 1px solid rgba(69, 204, 233, 0.35);
+
+        color: #5ed2ef;
+
+        font-size: 9px;
+
+        font-weight: 900;
+
+        letter-spacing: 0.8px;
+
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+
+        backdrop-filter: blur(15px);
+      }
+
+      .owner-content .section-label {
+        text-align: left;
+
+        margin-bottom: 12px;
+      }
+
+      .owner-content h2 {
+        color: #ecfbff;
+
+        font-size: clamp(32px, 4vw, 52px);
+
+        line-height: 1.08;
+
+        margin-bottom: 18px;
+      }
+
+      .owner-content h2 span {
+        color: #26b9e1;
+      }
+
+      .owner-role {
+        display: inline-block;
+
+        padding: 8px 12px;
+
+        border-radius: 8px;
+
+        background: rgba(19, 116, 143, 0.24);
+
+        border: 1px solid rgba(55, 194, 225, 0.18);
+
+        color: #55cce9;
+
+        font-size: 9px;
+
+        font-weight: 900;
+
+        letter-spacing: 1.2px;
+
+        margin-bottom: 20px;
+      }
+
+      .owner-content p {
+        color: #9ab7c2;
+
+        font-size: 13px;
+
+        line-height: 1.95;
+
+        margin-bottom: 15px;
+
+        max-width: 720px;
+      }
+
+      .owner-signature {
+        display: flex;
+
+        align-items: center;
+
+        gap: 13px;
+
+        margin-top: 25px;
+      }
+
+      .signature-line {
+        width: 45px;
+
+        height: 1px;
+
+        background: #29b9df;
+      }
+
+      .signature-text {
+        color: #d8f4fa;
+
+        font-size: 11px;
+
+        font-weight: 900;
+      }
+
+      /* =====================================================
+         FLOATING INVESTOR VISUALS
+      ===================================================== */
+
+      .investor-section {
+        overflow: hidden;
+
+        background:
+          linear-gradient(rgba(3, 25, 39, 0.92), rgba(4, 35, 50, 0.89)),
+          url("https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=2200&q=90");
+
+        background-size: cover;
+
+        background-position: center;
+      }
+
+      .investor-showcase {
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 25px;
+
+        perspective: 1000px;
+      }
+
+      .investor-card {
+        position: relative;
+
+        min-height: 350px;
+
+        overflow: hidden;
+
+        border-radius: 25px;
+
+        background: rgba(7, 54, 70, 0.7);
+
+        border: 1px solid rgba(102, 211, 235, 0.17);
+
+        backdrop-filter: blur(20px);
+
+        box-shadow: 0 25px 65px rgba(0, 0, 0, 0.28);
+
+        transition:
+          transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1),
+          box-shadow 0.55s ease,
+          border-color 0.55s ease;
+
+        transform-style: preserve-3d;
+      }
+
+      .investor-card:hover {
+        transform: translateY(-16px) rotateX(2deg) rotateY(-2deg);
+
+        box-shadow:
+          0 35px 80px rgba(0, 0, 0, 0.42),
+          0 0 45px rgba(10, 165, 203, 0.13);
+
+        border-color: rgba(41, 196, 229, 0.42);
+      }
+
+      .investor-photo {
+        height: 210px;
+
+        overflow: hidden;
+
+        position: relative;
+      }
+
+      .investor-photo::after {
+        content: "";
+
+        position: absolute;
+
+        inset: 0;
+
+        background: linear-gradient(transparent 30%, rgba(3, 25, 37, 0.75));
+      }
+
+      .investor-photo img {
+        width: 100%;
+
+        height: 100%;
+
+        object-fit: cover;
+
+        transition: transform 0.8s ease;
+      }
+
+      .investor-card:hover .investor-photo img {
+        transform: scale(1.12);
+      }
+
+      .investor-info {
+        padding: 22px;
+
+        position: relative;
+
+        z-index: 3;
+      }
+
+      .investor-info strong {
+        display: block;
+
+        color: #e5f8fc;
+
+        font-size: 16px;
+
+        margin-bottom: 5px;
+      }
+
+      .investor-info span {
+        display: block;
+
+        color: #48c7e6;
+
+        font-size: 9px;
+
+        font-weight: 900;
+
+        letter-spacing: 1px;
+
+        margin-bottom: 10px;
+      }
+
+      .investor-info p {
+        color: #91aeb9;
+
+        font-size: 11px;
+
+        line-height: 1.7;
+      }
+
+      .investor-float-icon {
+        position: absolute;
+
+        right: 18px;
+
+        top: 18px;
+
+        width: 38px;
+
+        height: 38px;
+
+        border-radius: 50%;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        background: rgba(3, 36, 50, 0.8);
+
+        border: 1px solid rgba(62, 205, 235, 0.35);
+
+        color: #43c7e8;
+
+        font-weight: 900;
+
+        z-index: 5;
+
+        transition: 0.5s;
+      }
+
+      .investor-card:hover .investor-float-icon {
+        transform: rotate(360deg) scale(1.1);
+
+        background: rgba(10, 105, 132, 0.85);
+      }
+
+      /* =====================================================
+         CTA
+      ===================================================== */
+
+      .cta {
+        padding: 90px 0;
+      }
+
+      .cta-box {
+        padding: 75px 30px;
+
+        text-align: center;
+
+        border-radius: 27px;
+
+        background:
+          linear-gradient(
+            120deg,
+            rgba(3, 48, 67, 0.96),
+            rgba(7, 118, 151, 0.9)
+          ),
+          url("https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=2000&q=90");
+
+        background-size: cover;
+
+        background-position: center;
+
+        color: white;
+
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+
+        overflow: hidden;
+
+        position: relative;
+      }
+
+      .cta-box::before {
+        content: "";
+
+        position: absolute;
+
+        width: 300px;
+        height: 300px;
+
+        right: -100px;
+        top: -150px;
+
+        border-radius: 50%;
+
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .cta-box h2 {
+        position: relative;
+
+        z-index: 2;
+
+        font-size: 40px;
+
+        margin-bottom: 14px;
+      }
+
+      .cta-box p {
+        position: relative;
+
+        z-index: 2;
+
+        max-width: 650px;
+
+        margin: 0 auto 28px;
+
+        color: #d9f0f6;
+
+        font-size: 13px;
+
+        line-height: 1.8;
+      }
+
+      .cta-box .blue-btn {
+        background: white;
+
+        color: #087ea4;
+
+        position: relative;
+
+        z-index: 2;
+      }
+
+      /* =====================================================
+         FOOTER
+      ===================================================== */
+
+      footer {
+        padding: 65px 0 25px;
+
+        background: rgba(3, 24, 37, 0.91);
+
+        backdrop-filter: blur(20px);
+
+        border-top: 1px solid rgba(91, 199, 226, 0.14);
+      }
+
+      .footer-grid {
+        display: grid;
+
+        grid-template-columns: 1.5fr repeat(3, 1fr);
+
+        gap: 45px;
+
+        margin-bottom: 45px;
+      }
+
+      .footer-brand p {
+        max-width: 320px;
+
+        color: #718996;
+
+        font-size: 11px;
+
+        line-height: 1.8;
+
+        margin-top: 14px;
+      }
+
+      .footer-column h4 {
+        color: #d8f4fa;
+
+        font-size: 12px;
+
+        margin-bottom: 15px;
+      }
+
+      .footer-column a {
+        display: block;
+
+        color: #718896;
+
+        font-size: 10px;
+
+        margin: 9px 0;
+
+        transition: 0.3s;
+      }
+
+      .footer-column a:hover {
+        color: #28b9df;
+
+        transform: translateX(4px);
+      }
+
+      .company-email {
+        margin-top: 20px;
+
+        padding: 16px;
+
+        border-radius: 13px;
+
+        background: rgba(7, 51, 66, 0.6);
+
+        border: 1px solid rgba(97, 203, 228, 0.14);
+
+        max-width: 330px;
+      }
+
+      .company-email span {
+        display: block;
+
+        color: #7b929e;
+
+        font-size: 9px;
+
+        margin-bottom: 5px;
+      }
+
+      .company-email a {
+        color: #27b8df;
+
+        font-size: 12px;
+
+        font-weight: 900;
+      }
+
+      .footer-bottom {
+        padding-top: 20px;
+
+        border-top: 1px solid rgba(100, 195, 219, 0.1);
+
+        display: flex;
+
+        justify-content: space-between;
+
+        color: #6f8c98;
+
+        font-size: 9px;
+      }
+
+      .disclaimer {
+        max-width: 950px;
+
+        color: #718a96;
+
+        font-size: 9px;
+
+        line-height: 1.7;
+
+        margin-top: 17px;
+      }
+
+      /* =====================================================
+         TABLET
+      ===================================================== */
+
+      @media (max-width: 950px) {
+        .nav-links {
+          display: none;
+        }
+
+        .nav-actions .login-btn,
+        .nav-actions .blue-btn {
+          display: inline-block;
+        }
+
+        .menu-btn {
+          display: block;
+        }
+
+        .hero-content {
+          grid-template-columns: 1fr;
+
+          gap: 45px;
+        }
+
+        .cards,
+        .asset-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .insights {
+          grid-template-columns: 1fr;
+        }
+
+        .stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .footer-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .owner-wrap {
+          grid-template-columns: 1fr;
+
+          text-align: center;
+        }
+
+        .owner-content .section-label {
+          text-align: center;
+        }
+
+        .owner-content p {
+          margin-left: auto;
+
+          margin-right: auto;
+        }
+
+        .owner-signature {
+          justify-content: center;
+        }
+
+        .investor-showcase {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      /* =====================================================
+         MOBILE
+      ===================================================== */
+
+      @media (max-width: 600px) {
+        .container {
+          width: 94%;
+        }
+
+        .navbar {
+          height: 70px;
+
+          gap: 6px;
+        }
+
+        .logo {
+          font-size: 13px;
+
+          gap: 7px;
+
+          min-width: 0;
+        }
+
+        .logo-box {
+          width: 36px;
+          height: 36px;
+
+          border-radius: 10px;
+        }
+
+        .logo-text {
+          white-space: nowrap;
+        }
+
+        .login-btn {
+          padding: 7px 5px;
+
+          font-size: 10px;
+        }
+
+        .nav-actions .blue-btn {
+          padding: 8px 9px;
+
+          font-size: 9px;
+
+          border-radius: 8px;
+        }
+
+        .menu-btn {
+          display: block;
+
+          font-size: 22px;
+
+          padding: 3px;
+        }
+
+        .nav-links.mobile-open {
+          top: 70px;
+
+          padding: 22px;
+
+          gap: 17px;
+        }
+
+        .nav-links.mobile-open a {
+          font-size: 13px;
+        }
+
+        .hero {
+          padding: 75px 0;
+
+          min-height: auto;
+        }
+
+        .hero h1 {
+          font-size: 44px;
+
+          letter-spacing: -2px;
+        }
+
+        .hero-note {
+          font-size: 13px;
+
+          line-height: 1.8;
+        }
+
+        .hero-buttons {
+          flex-direction: column;
+        }
+
+        .hero-buttons a {
+          width: 100%;
+
+          text-align: center;
+        }
+
+        section {
+          padding: 70px 0;
+        }
+
+        .section-heading h2 {
+          font-size: 30px;
+        }
+
+        .cards,
+        .asset-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .market-terminal {
+          padding: 20px;
+        }
+
+        .stats {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .testimonial {
+          width: 290px;
+        }
+
+        .cta-box {
+          padding: 55px 20px;
+        }
+
+        .cta-box h2 {
+          font-size: 30px;
+        }
+
+        .footer-grid {
+          grid-template-columns: 1fr 1fr;
+
+          gap: 30px 20px;
+        }
+
+        .footer-brand {
+          grid-column: 1 / -1;
+        }
+
+        .footer-bottom {
+          flex-direction: column;
+
+          gap: 8px;
+        }
+
+        .owner-image-ring {
+          width: 250px;
+
+          height: 250px;
+        }
+
+        .owner-content h2 {
+          font-size: 34px;
+        }
+
+        .investor-showcase {
+          grid-template-columns: 1fr;
+        }
+
+        .investor-card {
+          min-height: 330px;
+        }
+      }
+
+      /* =====================================================
+         VERY SMALL PHONES
+      ===================================================== */
+
+      @media (max-width: 390px) {
+        .container {
+          width: 95%;
+        }
+
+        .navbar {
+          gap: 3px;
+        }
+
+        .logo {
+          font-size: 11px;
+
+          gap: 5px;
+        }
+
+        .logo-box {
+          width: 33px;
+          height: 33px;
+        }
+
+        .login-btn {
+          padding: 6px 3px;
+
+          font-size: 9px;
+        }
+
+        .nav-actions {
+          gap: 2px;
+        }
+
+        .nav-actions .blue-btn {
+          padding: 7px 7px;
+
+          font-size: 8px;
+        }
+
+        .menu-btn {
+          font-size: 20px;
+
+          padding: 2px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- =====================================================
+         HEADER
+    ===================================================== -->
+
+    <header>
+      <div class="container navbar">
+        <a href="index.html" class="logo">
+          <div class="logo-box">
+            <img
+              src="image/ChatGPT Image Sep 2, 2026, 01_47_36 AM.png"
+              alt="ApexStone Capitals"
+              class="logo-placeholder"
+            />
+          </div>
+
+          <div class="logo-text">ApexStone <span>Capitals</span></div>
+        </a>
+
+        <nav>
+          <ul class="nav-links">
+            <li>
+              <a href="#markets"> Markets </a>
+            </li>
+
+            <li>
+              <a href="#platform"> Platform </a>
+            </li>
+
+            <li>
+              <a href="#sectors"> Sectors </a>
+            </li>
+
+            <li>
+              <a href="#insights"> Insights </a>
+            </li>
+
+            <li>
+              <a href="#about"> About </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions">
+          <a href="login.html" class="login-btn"> Login </a>
+
+          <a href="login.html" class="blue-btn"> Get Started → </a>
+
+          <button
+            class="menu-btn"
+            onclick="toggleMenu()"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+          >
+            ☰
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- =====================================================
+         HERO
+    ===================================================== -->
+
+    <section class="hero">
+      <div class="container hero-content">
+        <div class="reveal">
+          <div class="badge">
+            <span class="badge-dot"></span>
+
+            MARKET INTELLIGENCE • GLOBAL PERSPECTIVE
+          </div>
+
+          <h1>
+            Understand Markets.<br />
+
+            <span> Build Better Strategies. </span>
+          </h1>
+
+          <p class="hero-note">
+            ApexStone Capitals is presented as a modern financial technology and
+            market-intelligence platform designed to bring market research,
+            asset monitoring, portfolio analytics and investment education into
+            one sophisticated digital environment.
+          </p>
+
+          <div class="hero-buttons">
+            <a href="login.html" class="blue-btn"> Explore Platform → </a>
+
+            <a href="#markets" class="outline-btn"> View Market Dashboard </a>
+          </div>
+        </div>
+
+        <!-- MARKET TERMINAL -->
+
+        <div class="market-terminal reveal">
+          <div class="terminal-top">
+            <div>
+              <small style="color: #78909d; font-size: 9px">
+                APEXSTONE MARKET DESK
+              </small>
+
+              <h2>Market Overview</h2>
+            </div>
+
+            <span class="market-status"> LIVE MARKET VIEW </span>
+          </div>
+
+          <div class="asset">
+            <div class="asset-left">
+              <div class="asset-icon">BTC</div>
+
+              <div class="asset-name">
+                <strong> Bitcoin </strong>
+
+                <small> BTC / USD </small>
+              </div>
+            </div>
+
+            <div class="asset-value">
+              <strong> $64,820 </strong>
+
+              <span class="up"> +2.84% </span>
+            </div>
+          </div>
+
+          <div class="asset">
+            <div class="asset-left">
+              <div class="asset-icon">ETH</div>
+
+              <div class="asset-name">
+                <strong> Ethereum </strong>
+
+                <small> ETH / USD </small>
+              </div>
+            </div>
+
+            <div class="asset-value">
+              <strong> $3,420 </strong>
+
+              <span class="up"> +1.73% </span>
+            </div>
+          </div>
+
+          <div class="asset">
+            <div class="asset-left">
+              <div class="asset-icon">XAU</div>
+
+              <div class="asset-name">
+                <strong> Gold </strong>
+
+                <small> XAU / USD </small>
+              </div>
+            </div>
+
+            <div class="asset-value">
+              <strong> $2,515 </strong>
+
+              <span class="up"> +0.68% </span>
+            </div>
+          </div>
+
+          <div class="asset">
+            <div class="asset-left">
+              <div class="asset-icon">AAPL</div>
+
+              <div class="asset-name">
+                <strong> Apple </strong>
+
+                <small> AAPL </small>
+              </div>
+            </div>
+
+            <div class="asset-value">
+              <strong> $229.40 </strong>
+
+              <span class="up"> +1.12% </span>
+            </div>
+          </div>
+
+          <div class="chart">
+            <div
+              class="tradingview-widget-container"
+              style="height: 100%; width: 100%"
+            >
+              <div
+                class="tradingview-widget-container__widget"
+                style="height: 100%; width: 100%"
+              ></div>
+
+              <script
+                type="text/javascript"
+                src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js"
+                async
+              >
+                {
+                  "autosize": true,
+                  "symbol": "BITSTAMP:BTCUSD",
+                  "interval": "60",
+                  "timezone": "Etc/UTC",
+                  "theme": "dark",
+                  "style": "1",
+                  "locale": "en",
+                  "allow_symbol_change": false,
+                  "hide_top_toolbar": true,
+                  "hide_legend": true,
+                  "hide_side_toolbar": true,
+                  "hide_volume": true,
+                  "save_image": false,
+                  "calendar": false,
+                  "support_host": "https://www.tradingview.com"
+                }
+              </script>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         TRUST BAR
+    ===================================================== -->
+
+    <div class="trust" id="markets">
+      <div class="container trust-inner">
+        <span>MARKET ANALYTICS</span>
+        <span>PORTFOLIO RESEARCH</span>
+        <span>GLOBAL ASSETS</span>
+        <span>REAL ESTATE</span>
+        <span>ENERGY MARKETS</span>
+        <span>DIGITAL ASSETS</span>
+      </div>
+    </div>
+
+    <!-- =====================================================
+         PLATFORM
+    ===================================================== -->
+
+    <section id="platform">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div class="section-label">THE APEXSTONE EXPERIENCE</div>
+
+          <h2>Everything you need to understand the market</h2>
+
+          <p>
+            Explore market information, portfolio tools and sector research
+            through a modern glass-style financial interface.
+          </p>
+        </div>
+
+        <div class="cards">
+          <div class="glass-card reveal">
+            <div class="icon">↗</div>
+
+            <h3>Market Intelligence</h3>
+
+            <p>
+              Explore selected market movements, financial trends and asset
+              information through a clean analytical interface.
+            </p>
+          </div>
+
+          <div class="glass-card reveal">
+            <div class="icon">◈</div>
+
+            <h3>Portfolio Analytics</h3>
+
+            <p>
+              Study portfolio allocation, asset exposure and performance
+              concepts from one centralized dashboard.
+            </p>
+          </div>
+
+          <div class="glass-card reveal">
+            <div class="icon">▦</div>
+
+            <h3>Research Centre</h3>
+
+            <p>
+              Read educational material covering markets, sectors, risk
+              management and financial decision-making.
+            </p>
+          </div>
+
+          <div class="glass-card reveal">
+            <div class="icon">⌁</div>
+
+            <h3>Trading Interface</h3>
+
+            <p>
+              A visual trading-style environment for studying price movements
+              and understanding market charts.
+            </p>
+          </div>
+
+          <div class="glass-card reveal">
+            <div class="icon">◆</div>
+
+            <h3>Multi-Asset View</h3>
+
+            <p>
+              Compare equities, commodities, digital assets, property and
+              energy-related sectors in one interface.
+            </p>
+          </div>
+
+          <div class="glass-card reveal">
+            <div class="icon">✓</div>
+
+            <h3>Risk Awareness</h3>
+
+            <p>
+              Understand that markets involve uncertainty and that past
+              performance does not guarantee future outcomes.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         SECTORS
+    ===================================================== -->
+
+    <section class="asset-section" id="sectors">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div class="section-label">MARKET SECTORS</div>
+
+          <h2>Explore more than traditional markets</h2>
+
+          <p>
+            Different industries and asset categories can respond differently to
+            economic conditions, creating a broader view of the market.
+          </p>
+        </div>
+
+        <div class="asset-grid">
+          <div class="asset-card real-estate reveal">
+            <h3>Real Estate</h3>
+
+            <p>
+              Explore property markets, development trends and real-estate
+              investment concepts.
+            </p>
+          </div>
+
+          <div class="asset-card energy reveal">
+            <h3>Energy & Petroleum</h3>
+
+            <p>
+              Study energy markets, petroleum economics and the factors that
+              influence global energy prices.
+            </p>
+          </div>
+
+          <div class="asset-card markets-card reveal">
+            <h3>Global Markets</h3>
+
+            <p>
+              Follow equities, commodities and digital asset market concepts
+              through one interface.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         MARKET INSIGHTS
+    ===================================================== -->
+
+    <section id="insights">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div class="section-label">MARKET INTELLIGENCE</div>
+
+          <h2>What is happening across the financial landscape?</h2>
+
+          <p>
+            A dashboard-style overview for following important market themes.
+          </p>
+        </div>
+
+        <div class="insights">
+          <div class="insight-main reveal">
+            <h3>Understanding the modern market</h3>
+
+            <p>
+              Financial markets are influenced by many different forces.
+              Interest rates can affect borrowing and business activity.
+              Economic growth can influence company earnings. Commodity prices
+              can affect businesses and consumers, while global events can
+              change investor expectations quickly.
+            </p>
+
+            <br />
+
+            <p>
+              A modern market platform therefore needs more than a single price
+              chart. It needs context. ApexStone Capitals brings market
+              categories, research concepts, portfolio analytics and educational
+              information together to create a broader view of the financial
+              environment.
+            </p>
+
+            <div class="stats">
+              <div class="stat">
+                <strong>24/7</strong>
+                <span>MARKET WATCH</span>
+              </div>
+
+              <div class="stat">
+                <strong>06+</strong>
+                <span>ASSET CATEGORIES</span>
+              </div>
+
+              <div class="stat">
+                <strong>360°</strong>
+                <span>MARKET VIEW</span>
+              </div>
+
+              <div class="stat">
+                <strong>100%</strong>
+                <span>RESEARCH FOCUS</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="insight-list">
+            <div class="insight-item reveal">
+              <strong>Digital Asset Markets</strong>
+              <span>Monitor major cryptocurrency market concepts.</span>
+            </div>
+
+            <div class="insight-item reveal">
+              <strong>Real Estate</strong>
+              <span>Property values, development and market cycles.</span>
+            </div>
+
+            <div class="insight-item reveal">
+              <strong>Energy & Petroleum</strong>
+              <span>Study energy prices and global supply factors.</span>
+            </div>
+
+            <div class="insight-item reveal">
+              <strong>Equity Markets</strong>
+              <span>Explore companies, sectors and market sentiment.</span>
+            </div>
+
+            <div class="insight-item reveal">
+              <strong>Portfolio Strategy</strong>
+              <span>Learn about diversification and risk awareness.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         OWNER PROFILE
+    ===================================================== -->
+
+    <section class="owner-section" id="owner">
+      <div class="container">
+        <div class="owner-wrap">
+          <div class="owner-image-area reveal">
+            <div class="owner-image-ring">
+              <img
+                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&q=90"
+                alt="ApexStone Capitals Founder"
+              />
+            </div>
+
+            <div class="owner-status">● WILLIAMS .D.</div>
+          </div>
+
+          <div class="owner-content reveal">
+            <div class="section-label">MEET THE OWNER</div>
+
+            <h2>
+              Building a <span>smarter view</span> of modern financial markets.
+            </h2>
+
+            <div class="owner-role">FOUNDER & MANAGING DIRECTOR</div>
+
+            <p>
+              ApexStone Capitals was built around a simple philosophy: financial
+              technology should make complex market information easier to
+              explore, understand and navigate.
+            </p>
+
+            <p>
+              The company's leadership focuses on creating a modern environment
+              where market intelligence, portfolio technology, research and
+              financial education can exist together. Rather than relying on a
+              single market or asset class, the vision is to provide a broader
+              perspective across digital assets, equities, commodities, energy,
+              real estate and other important areas of the financial landscape.
+            </p>
+
+            <p>
+              The owner believes that informed decision-making begins with
+              research, discipline and an understanding of risk. ApexStone
+              Capitals therefore places strong emphasis on technology,
+              transparency of information and responsible financial thinking.
+            </p>
+
+            <div class="owner-signature">
+              <div class="signature-line"></div>
+
+              <div class="signature-text">MRS WILLIAMS .D.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         TESTIMONIALS
+    ===================================================== -->
+
+    <section class="testimonial-section">
+      <div class="section-heading reveal">
+        <div class="section-label">PLATFORM FEEDBACK</div>
+
+        <h2>What users are saying</h2>
+      </div>
+
+      <div class="testimonial-track">
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+
+          <p>
+            “The market dashboard makes it much easier to understand different
+            asset categories from one place.”
+          </p>
+
+          <div class="testimonial-profile">
+            <img
+              src="https://randomuser.me/api/portraits/men/32.jpg"
+              alt="Michael"
+            />
+
+            <div>
+              <strong>Michael J.</strong>
+              <small>Platform feedback</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+
+          <p>
+            “I like the clean interface and the way the information is organized
+            into different market sections.”
+          </p>
+
+          <div class="testimonial-profile">
+            <img
+              src="https://randomuser.me/api/portraits/women/44.jpg"
+              alt="Busisiwe"
+            />
+
+            <div>
+              <strong>Busisiwe C.</strong>
+              <small>Platform feedback</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+
+          <p>
+            “The research-style layout gives the platform a professional
+            financial technology feel.”
+          </p>
+
+          <div class="testimonial-profile">
+            <img
+              src="https://randomuser.me/api/portraits/men/46.jpg"
+              alt="Dave"
+            />
+
+            <div>
+              <strong>Dave W.</strong>
+              <small>Platform feedback</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+
+          <p>
+            “The sector overview makes it easier to explore markets beyond just
+            stocks and cryptocurrencies.”
+          </p>
+
+          <div class="testimonial-profile">
+            <img
+              src="https://randomuser.me/api/portraits/men/75.jpg"
+              alt="Nkosi"
+            />
+
+            <div>
+              <strong>Nkosi R.</strong>
+              <small>Platform feedback</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+
+          <p>
+            “The market dashboard makes it much easier to understand different
+            asset categories from one place.”
+          </p>
+
+          <div class="testimonial-profile">
+            <img
+              src="https://randomuser.me/api/portraits/men/52.jpg"
+              alt="Jerry"
+            />
+
+            <div>
+              <strong>Jerry B.</strong>
+              <small>Platform feedback</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+
+          <p>
+            “I like the clean interface and the way the information is organized
+            into different market sections.”
+          </p>
+
+          <div class="testimonial-profile">
+            <img
+              src="https://randomuser.me/api/portraits/men/67.jpg"
+              alt="Wagon"
+            />
+
+            <div>
+              <strong>Wagon T.</strong>
+              <small>Platform feedback</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+
+          <p>
+            “The research-style layout gives the platform a professional
+            financial technology feel.”
+          </p>
+
+          <div class="testimonial-profile">
+            <img
+              src="https://randomuser.me/api/portraits/men/11.jpg"
+              alt="Salvation"
+            />
+
+            <div>
+              <strong>Salvation</strong>
+              <small>Platform feedback</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial">
+          <div class="stars">★★★★★</div>
+
+          <p>
+            “The sector overview makes it easier to explore markets beyond just
+            stocks and cryptocurrencies.”
+          </p>
+
+          <div class="testimonial-profile">
+            <img
+              src="https://randomuser.me/api/portraits/men/41.jpg"
+              alt="Daniel"
+            />
+
+            <div>
+              <strong>Daniel C.</strong>
+              <small>Platform feedback</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         INVESTOR SHOWCASE
+    ===================================================== -->
+
+    <section class="investor-section">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div class="section-label">INVESTOR COMMUNITY</div>
+
+          <h2>A growing community exploring the markets</h2>
+
+          <p>
+            Meet some of the people represented in the ApexStone community and
+            explore the different perspectives that shape today's financial
+            landscape.
+          </p>
+        </div>
+
+        <div class="investor-showcase">
+          <div class="investor-card reveal">
+            <div class="investor-photo">
+              <img
+                src="https://randomuser.me/api/portraits/men/75.jpg"
+                alt="Investor profile"
+              />
+            </div>
+
+            <div class="investor-float-icon">↗</div>
+
+            <div class="investor-info">
+              <strong>Global Market Investor</strong>
+
+              <span>EQUITIES • DIGITAL ASSETS</span>
+
+              <p>
+                Exploring diversified market opportunities through research,
+                analytics and a broader understanding of financial trends.
+              </p>
+            </div>
+          </div>
+
+          <div class="investor-card reveal">
+            <div class="investor-photo">
+              <img
+                src="https://randomuser.me/api/portraits/women/65.jpg"
+                alt="Investor profile"
+              />
+            </div>
+
+            <div class="investor-float-icon">◆</div>
+
+            <div class="investor-info">
+              <strong>Portfolio Explorer</strong>
+
+              <span>PROPERTY • MARKETS</span>
+
+              <p>
+                Following multiple sectors while learning how market cycles,
+                economic conditions and diversification can affect portfolios.
+              </p>
+            </div>
+          </div>
+
+          <div class="investor-card reveal">
+            <div class="investor-photo">
+              <img
+                src="https://randomuser.me/api/portraits/men/54.jpg"
+                alt="Investor profile"
+              />
+            </div>
+
+            <div class="investor-float-icon">◈</div>
+
+            <div class="investor-info">
+              <strong>Market Researcher</strong>
+
+              <span>ENERGY • COMMODITIES</span>
+
+              <p>
+                Studying market movements and global economic developments with
+                a focus on research and informed financial thinking.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         ABOUT
+    ===================================================== -->
+
+    <section id="about">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div class="section-label">ABOUT APEXSTONE</div>
+
+          <h2>Technology, information and a broader view of markets</h2>
+
+          <p>
+            ApexStone Capitals is designed around a simple idea: financial
+            information should be easier to explore and understand.
+          </p>
+        </div>
+
+        <div class="cards">
+          <div class="glass-card reveal">
+            <div class="icon">01</div>
+
+            <h3>Research First</h3>
+
+            <p>
+              Market information should be examined carefully before financial
+              decisions are made.
+            </p>
+          </div>
+
+          <div class="glass-card reveal">
+            <div class="icon">02</div>
+
+            <h3>Multiple Sectors</h3>
+
+            <p>
+              The platform brings together market categories including property,
+              energy, equities and digital assets.
+            </p>
+          </div>
+
+          <div class="glass-card reveal">
+            <div class="icon">03</div>
+
+            <h3>Responsible Thinking</h3>
+
+            <p>
+              ApexStone emphasizes research, analysis and informed
+              decision-making.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         CTA
+    ===================================================== -->
+
+    <section class="cta">
+      <div class="container">
+        <div class="cta-box reveal">
+          <h2>Explore the ApexStone experience</h2>
+
+          <p>
+            Discover a premium market interface designed around research,
+            analytics, financial education and a broader understanding of modern
+            financial markets.
+          </p>
+
+          <a href="login.html" class="blue-btn"> Explore Platform → </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         FOOTER
+    ===================================================== -->
+
+    <footer>
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a href="index.html" class="logo">
+              <div class="logo-box">
+                <img
+                  src="image/ChatGPT Image Sep 2, 2026, 01_47_36 AM.png"
+                  alt="ApexStone Capitals"
+                  class="logo-placeholder"
+                />
+              </div>
+
+              <div class="logo-text">ApexStone <span>Capitals</span></div>
+            </a>
+
+            <p>
+              A modern financial technology and market-intelligence interface
+              for exploring markets, sectors, analytics and investment.
+            </p>
+
+            <div class="company-email">
+              <span>COMPANY EMAIL</span>
+
+              <a href="mailto:apexstonecapitals@outlook.com">
+                support@apexstonecapitals.com
+              </a>
+            </div>
+            <div class="company-email">
+              <span>COMPANY TELEPHONE</span>
+              <a href="+442079460837">+44207946083</a>
+            </div>
+          </div>
+
+          <div class="footer-column">
+            <h4>Platform</h4>
+
+            <a href="#markets">Markets</a>
+
+            <a href="#platform">Analytics</a>
+
+            <a href="#insights">Market Insights</a>
+
+            <a href="#sectors">Sectors</a>
+          </div>
+
+          <div class="footer-column">
+            <h4>Company</h4>
+
+            <a href="#about">About Us</a>
+
+            <a href="#">Research</a>
+
+            <a href="#">Support</a>
+
+            <a href="#">Privacy</a>
+          </div>
+
+          <div class="footer-column">
+            <h4>Account</h4>
+
+            <a href="login.html">Login</a>
+
+            <a href="register.html">Register</a>
+
+            <a href="#">Settings</a>
+
+            <a href="#">Help Centre</a>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <span>© 2026 ApexStone Capitals</span>
+        </div>
+        <address>
+          ApexStone Capitals Ltd.
+          <li>24 canary wharf</li>
+          <li>London</li>
+          <li>EC2A 1AA</li>
+          <li>United Kingdom</li>
+        </address>
+      </div>
+    </footer>
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ===================================================== -->
+
+    <script>
+      /* =====================================================
+         MOBILE MENU
+      ===================================================== */
+
+      function toggleMenu() {
+        const nav = document.querySelector(".nav-links");
+
+        const menuButton = document.querySelector(".menu-btn");
+
+        nav.classList.toggle("mobile-open");
+
+        const isOpen = nav.classList.contains("mobile-open");
+
+        menuButton.setAttribute("aria-expanded", isOpen ? "true" : "false");
+
+        menuButton.innerHTML = isOpen ? "✕" : "☰";
+      }
+
+      /* =====================================================
+         CLOSE MOBILE MENU WHEN A LINK IS CLICKED
+      ===================================================== */
+
+      document.querySelectorAll(".nav-links a").forEach(function (link) {
+        link.addEventListener("click", function () {
+          const nav = document.querySelector(".nav-links");
+
+          const menuButton = document.querySelector(".menu-btn");
+
+          nav.classList.remove("mobile-open");
+
+          menuButton.setAttribute("aria-expanded", "false");
+
+          menuButton.innerHTML = "☰";
+        });
+      });
+
+      /* =====================================================
+         SCROLL REVEAL ANIMATION
+      ===================================================== */
+
+      const revealElements = document.querySelectorAll(".reveal");
+
+      const observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("active");
+            }
+          });
+        },
+        {
+          threshold: 0.12,
+        },
+      );
+
+      revealElements.forEach(function (element) {
+        observer.observe(element);
+      });
+
+      /* =====================================================
+         INVESTOR CARD MOUSE PARALLAX
+      ===================================================== */
+
+      document.querySelectorAll(".investor-card").forEach(function (card) {
+        card.addEventListener("mousemove", function (event) {
+          const rect = card.getBoundingClientRect();
+
+          const x = event.clientX - rect.left - rect.width / 2;
+
+          const y = event.clientY - rect.top - rect.height / 2;
+
+          const rotateY = x / 28;
+          const rotateX = y / -28;
+
+          card.style.transform =
+            "translateY(-16px) rotateX(" +
+            rotateX +
+            "deg) rotateY(" +
+            rotateY +
+            "deg)";
+        });
+
+        card.addEventListener("mouseleave", function () {
+          card.style.transform = "";
+        });
+      });
+    </script>
+  </body>
+</html>

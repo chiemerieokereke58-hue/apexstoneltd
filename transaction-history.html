@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Transaction History | ApexStone Capitals</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background: #06101d;
+        color: #fff;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          linear-gradient(rgba(5, 20, 35, 0.78), rgba(5, 20, 35, 0.92)),
+          url("https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=2000&q=80")
+            center/cover no-repeat;
+        z-index: -3;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(90, 150, 190, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(90, 150, 190, 0.05) 1px, transparent 1px);
+        background-size: 50px 50px;
+        animation: gridMove 12s linear infinite;
+        z-index: -2;
+      }
+
+      @keyframes gridMove {
+        from {
+          background-position: 0 0;
+        }
+
+        to {
+          background-position: 50px 50px;
+        }
+      }
+
+      header {
+        height: 70px;
+        padding: 0 25px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(5, 18, 32, 0.88);
+        border-bottom: 1px solid rgba(120, 180, 220, 0.15);
+        backdrop-filter: blur(15px);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      /* LOGO SIZE FIX */
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .logo-placeholder {
+        width: 150px;
+        height: 45px;
+        object-fit: contain;
+        display: block;
+      }
+
+      .logo-box {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        border: 1px solid rgba(120, 190, 230, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(70, 130, 170, 0.15);
+      }
+
+      .menu-button {
+        width: 43px;
+        height: 43px;
+        border: none;
+        border-radius: 10px;
+        background: rgba(70, 130, 170, 0.18);
+        color: white;
+        font-size: 23px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .menu-button:hover {
+        background: rgba(90, 160, 205, 0.35);
+        transform: scale(1.05);
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 0;
+        right: -290px;
+        width: 290px;
+        height: 100vh;
+        background: rgba(5, 18, 32, 0.98);
+        backdrop-filter: blur(20px);
+        border-left: 1px solid rgba(100, 180, 220, 0.2);
+        padding: 85px 20px 20px;
+        z-index: 200;
+        transition: 0.35s ease;
+      }
+
+      .sidebar.active {
+        right: 0;
+      }
+
+      .sidebar a {
+        display: block;
+        text-decoration: none;
+        color: #d7e8f5;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 8px;
+        transition: 0.3s;
+      }
+
+      .sidebar a:hover {
+        background: rgba(80, 150, 195, 0.18);
+        transform: translateX(-4px);
+      }
+
+      .close-menu {
+        position: absolute;
+        top: 22px;
+        right: 20px;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 27px;
+        cursor: pointer;
+      }
+
+      main {
+        max-width: 1150px;
+        margin: auto;
+        padding: 45px 20px 70px;
+      }
+
+      .page-title {
+        margin-bottom: 30px;
+      }
+
+      .page-title h1 {
+        font-size: 34px;
+        margin-bottom: 8px;
+      }
+
+      .page-title p {
+        color: #9eb7c9;
+      }
+
+      .card {
+        background: rgba(7, 25, 42, 0.78);
+        border: 1px solid rgba(120, 190, 225, 0.16);
+        border-radius: 18px;
+        padding: 28px;
+        backdrop-filter: blur(18px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+        margin-bottom: 25px;
+      }
+
+      .card h2 {
+        font-size: 21px;
+        margin-bottom: 22px;
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+
+      .summary-box {
+        padding: 20px;
+        border-radius: 13px;
+        background: rgba(30, 70, 95, 0.14);
+        border: 1px solid rgba(110, 180, 220, 0.1);
+      }
+
+      .summary-box span {
+        display: block;
+        color: #8faaba;
+        font-size: 12px;
+        margin-bottom: 8px;
+      }
+
+      .summary-box strong {
+        font-size: 22px;
+      }
+
+      .table-wrapper {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 700px;
+      }
+
+      th {
+        text-align: left;
+        padding: 14px;
+        color: #8faaba;
+        font-size: 12px;
+        font-weight: normal;
+        border-bottom: 1px solid rgba(120, 180, 210, 0.12);
+      }
+
+      td {
+        padding: 17px 14px;
+        border-bottom: 1px solid rgba(120, 180, 210, 0.08);
+        font-size: 13px;
+      }
+
+      tr:hover td {
+        background: rgba(70, 130, 170, 0.06);
+      }
+
+      .type {
+        font-weight: bold;
+      }
+
+      .deposit {
+        color: #a9c9d8;
+      }
+
+      .withdrawal {
+        color: #c6b99f;
+      }
+
+      .investment {
+        color: #9fb7c6;
+      }
+
+      .status {
+        display: inline-block;
+        padding: 6px 9px;
+        border-radius: 7px;
+        font-size: 11px;
+      }
+
+      .completed {
+        background: rgba(80, 130, 155, 0.16);
+        color: #a8c7d5;
+      }
+
+      .pending {
+        background: rgba(150, 125, 75, 0.15);
+        color: #c7b68d;
+      }
+
+      .failed {
+        background: rgba(120, 75, 75, 0.15);
+        color: #c29b9b;
+      }
+
+      .filter-area {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+      }
+
+      .filter-area select,
+      .filter-area input {
+        padding: 11px 13px;
+        border-radius: 9px;
+        border: 1px solid rgba(120, 180, 215, 0.15);
+        background: rgba(2, 12, 23, 0.7);
+        color: white;
+        outline: none;
+      }
+
+      .filter-area select option {
+        background: #071827;
+      }
+
+      .empty {
+        text-align: center;
+        padding: 45px 20px;
+        color: #7f9aaa;
+        display: none;
+      }
+
+      @media (max-width: 700px) {
+        header {
+          padding: 0 15px;
+        }
+
+        main {
+          padding: 30px 14px 50px;
+        }
+
+        .page-title h1 {
+          font-size: 28px;
+        }
+
+        .card {
+          padding: 20px;
+        }
+
+        .summary-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .filter-area {
+          flex-direction: column;
+        }
+
+        .filter-area select,
+        .filter-area input {
+          width: 100%;
+        }
+
+        /* MOBILE LOGO */
+        .logo-placeholder {
+          width: 125px;
+          height: 40px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="logo">
+        <img
+          src="image/ChatGPT Image Sep 2, 2026, 01_47_36 AM.png"
+          alt="ApexStone Capitals"
+          class="logo-placeholder"
+        />
+      </div>
+
+      <button class="menu-button" onclick="openMenu()">☰</button>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+      <button class="close-menu" onclick="closeMenu()">×</button>
+
+      <a href="dashboard.html">Dashboard</a>
+
+      <a href="deposit.html">Deposit</a>
+
+      <a href="withdrawal.html">Withdrawal</a>
+
+      <a href="transaction-history.html">Transaction History</a>
+
+      <a href="login.html">Logout</a>
+      <a href="investment.html"> Investment plan</a>
+      <a href="active-investment.html">Active investment </a>
+    </aside>
+
+    <main>
+      <div class="page-title">
+        <h1>Transaction History</h1>
+        <p>View your account transaction activity.</p>
+      </div>
+
+      <div class="summary-grid">
+        <div class="summary-box">
+          <span>Total Deposits</span>
+          <strong>$18,500.00</strong>
+        </div>
+
+        <div class="summary-box">
+          <span>Total Withdrawals</span>
+          <strong>$4,250.00</strong>
+        </div>
+
+        <div class="summary-box">
+          <span>Total Transactions</span>
+          <strong>18</strong>
+        </div>
+      </div>
+
+      <section class="card">
+        <h2>All Transactions</h2>
+
+        <div class="filter-area">
+          <select id="typeFilter" onchange="filterTransactions()">
+            <option value="all">All Types</option>
+            <option value="deposit">Deposits</option>
+            <option value="withdrawal">Withdrawals</option>
+            <option value="investment">Investments</option>
+          </select>
+
+          <select id="statusFilter" onchange="filterTransactions()">
+            <option value="all">All Status</option>
+            <option value="completed">Completed</option>
+            <option value="pending">Pending</option>
+            <option value="failed">Failed</option>
+          </select>
+
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search transaction..."
+            oninput="filterTransactions()"
+          />
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Transaction</th>
+                <th>Asset</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+
+            <tbody id="transactionTable">
+              <tr data-type="deposit" data-status="completed">
+                <td>
+                  <span class="type deposit">Deposit</span>
+                </td>
+                <td>USDT</td>
+                <td>$5,000.00</td>
+                <td>Sep 01, 2026</td>
+                <td>
+                  <span class="status completed">Completed</span>
+                </td>
+              </tr>
+
+              <tr data-type="investment" data-status="completed">
+                <td>
+                  <span class="type investment">Investment</span>
+                </td>
+                <td>BTC</td>
+                <td>$3,500.00</td>
+                <td>Aug 29, 2026</td>
+                <td>
+                  <span class="status completed">Completed</span>
+                </td>
+              </tr>
+
+              <tr data-type="withdrawal" data-status="pending">
+                <td>
+                  <span class="type withdrawal">Withdrawal</span>
+                </td>
+                <td>BTC</td>
+                <td>$1,250.00</td>
+                <td>Aug 27, 2026</td>
+                <td>
+                  <span class="status pending">Pending</span>
+                </td>
+              </tr>
+
+              <tr data-type="deposit" data-status="completed">
+                <td>
+                  <span class="type deposit">Deposit</span>
+                </td>
+                <td>ETH</td>
+                <td>$2,800.00</td>
+                <td>Aug 25, 2026</td>
+                <td>
+                  <span class="status completed">Completed</span>
+                </td>
+              </tr>
+
+              <tr data-type="withdrawal" data-status="completed">
+                <td>
+                  <span class="type withdrawal">Withdrawal</span>
+                </td>
+                <td>USDT</td>
+                <td>$3,000.00</td>
+                <td>Aug 22, 2026</td>
+                <td>
+                  <span class="status completed">Completed</span>
+                </td>
+              </tr>
+
+              <tr data-type="investment" data-status="completed">
+                <td>
+                  <span class="type investment">Investment</span>
+                </td>
+                <td>ETH</td>
+                <td>$4,200.00</td>
+                <td>Aug 18, 2026</td>
+                <td>
+                  <span class="status completed">Completed</span>
+                </td>
+              </tr>
+
+              <tr data-type="withdrawal" data-status="failed">
+                <td>
+                  <span class="type withdrawal">Withdrawal</span>
+                </td>
+                <td>LTC</td>
+                <td>$850.00</td>
+                <td>Aug 15, 2026</td>
+                <td>
+                  <span class="status failed">Failed</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="empty" id="emptyMessage">
+          No transactions match your search.
+        </div>
+      </section>
+    </main>
+
+    <script>
+      function openMenu() {
+        document.getElementById("sidebar").classList.add("active");
+      }
+
+      function closeMenu() {
+        document.getElementById("sidebar").classList.remove("active");
+      }
+
+      function filterTransactions() {
+        const type = document.getElementById("typeFilter").value;
+        const status = document.getElementById("statusFilter").value;
+
+        const search = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+
+        const rows = document.querySelectorAll("#transactionTable tr");
+
+        let visible = 0;
+
+        rows.forEach(function (row) {
+          const rowType = row.dataset.type;
+          const rowStatus = row.dataset.status;
+          const rowText = row.innerText.toLowerCase();
+
+          const typeMatch = type === "all" || rowType === type;
+
+          const statusMatch = status === "all" || rowStatus === status;
+
+          const searchMatch = rowText.includes(search);
+
+          if (typeMatch && statusMatch && searchMatch) {
+            row.style.display = "";
+            visible++;
+          } else {
+            row.style.display = "none";
+          }
+        });
+
+        document.getElementById("emptyMessage").style.display =
+          visible === 0 ? "block" : "none";
+      }
+    </script>
+  </body>
+</html>

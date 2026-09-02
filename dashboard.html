@@ -1,0 +1,3338 @@
+<title>ApexStone Capitals | Trading Dashboard</title>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  :root {
+    --blue: #187fa5;
+    --blue-light: #319bbd;
+    --cyan: #55bfd8;
+    --dark: #07141d;
+    --dark2: #0a1d28;
+    --glass: rgba(8, 27, 38, 0.72);
+    --border: rgba(255, 255, 255, 0.13);
+    --green: #20bd83;
+    --red: #e65d67;
+    --text: #e9f5f8;
+    --muted: #78919c;
+    --shadow: 0 25px 70px rgba(0, 20, 30, 0.28);
+  }
+
+  /* =========================
+     LIGHT MODE VARIABLES
+  ========================= */
+
+  body.light {
+    --dark: #f4f8fa;
+    --dark2: #ffffff;
+    --glass: rgba(255, 255, 255, 0.82);
+    --border: rgba(20, 70, 85, 0.12);
+    --text: #142832;
+    --muted: #617985;
+    --shadow: 0 20px 55px rgba(20, 60, 75, 0.12);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+
+    background:
+      linear-gradient(rgba(4, 18, 27, 0.58), rgba(5, 22, 31, 0.64)),
+      url("https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=2200&q=90");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+
+    overflow-x: hidden;
+
+    transition:
+      background 0.35s ease,
+      color 0.35s ease;
+  }
+
+  body.light {
+    background:
+      linear-gradient(rgba(244, 248, 250, 0.91), rgba(244, 248, 250, 0.96)),
+      url("https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=2200&q=90");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+
+    background-image:
+      linear-gradient(rgba(93, 190, 215, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(93, 190, 215, 0.035) 1px, transparent 1px);
+
+    background-size: 55px 55px;
+
+    transition: opacity 0.3s ease;
+  }
+
+  body.light::before {
+    opacity: 0.35;
+  }
+
+  .demo-bar {
+    text-align: center;
+    padding: 8px;
+    background: rgba(2, 14, 21, 0.9);
+    border-bottom: 1px solid rgba(90, 190, 215, 0.1);
+    color: #829ca7;
+    font-size: 10px;
+    letter-spacing: 0.7px;
+  }
+
+  .demo-bar span {
+    color: #61c2da;
+    font-weight: bold;
+  }
+
+  /* =========================
+     HEADER
+  ========================= */
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    height: 72px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 30px;
+
+    background: rgba(5, 20, 29, 0.76);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    transition:
+      background 0.3s ease,
+      border 0.3s ease;
+  }
+
+  body.light header {
+    background: rgba(255, 255, 255, 0.86);
+    border-bottom-color: rgba(20, 70, 85, 0.1);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-placeholder {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: linear-gradient(135deg, #176b88, #2d9bb9);
+
+    color: white;
+    font-weight: 900;
+    font-size: 18px;
+
+    box-shadow: 0 8px 25px rgba(20, 120, 150, 0.18);
+
+    object-fit: contain;
+  }
+
+  .real-logo {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+  }
+
+  .brand-name {
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+  }
+
+  .brand-name span {
+    display: block;
+    margin-top: 3px;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: #68bfd4;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .market-status {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #8ea7b1;
+    font-size: 10px;
+  }
+
+  .status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #2ac18a;
+    box-shadow: 0 0 10px rgba(42, 193, 138, 0.6);
+  }
+
+  /* =========================
+     THEME BUTTON
+  ========================= */
+
+  .theme-btn {
+    width: 42px;
+    height: 42px;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+
+    cursor: pointer;
+    font-size: 17px;
+
+    transition: 0.3s;
+  }
+
+  .theme-btn:hover {
+    background: rgba(43, 145, 175, 0.2);
+    border-color: rgba(80, 190, 215, 0.4);
+    transform: translateY(-2px);
+  }
+
+  body.light .theme-btn {
+    color: #16323d;
+    background: rgba(20, 90, 110, 0.06);
+    border-color: rgba(20, 90, 110, 0.12);
+  }
+
+  .menu-btn {
+    width: 42px;
+    height: 42px;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+
+    cursor: pointer;
+    font-size: 18px;
+
+    transition: 0.3s;
+  }
+
+  .menu-btn:hover {
+    background: rgba(43, 145, 175, 0.2);
+    border-color: rgba(80, 190, 215, 0.4);
+    transform: translateY(-2px);
+  }
+
+  body.light .menu-btn {
+    color: #16323d;
+    background: rgba(20, 90, 110, 0.06);
+    border-color: rgba(20, 90, 110, 0.12);
+  }
+
+  /* =========================
+     SIDE MENU
+  ========================= */
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 200;
+    display: none;
+  }
+
+  .overlay.show {
+    display: block;
+  }
+
+  .side-menu {
+    position: fixed;
+    right: -340px;
+    top: 0;
+
+    width: 320px;
+    height: 100vh;
+
+    z-index: 300;
+
+    background: rgba(6, 23, 33, 0.97);
+    backdrop-filter: blur(25px);
+
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+
+    padding: 25px;
+
+    transition: 0.35s ease;
+
+    overflow-y: auto;
+  }
+
+  body.light .side-menu {
+    background: rgba(255, 255, 255, 0.97);
+    border-left-color: rgba(20, 70, 85, 0.1);
+  }
+
+  .side-menu.open {
+    right: 0;
+  }
+
+  .menu-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 30px;
+  }
+
+  .menu-head h2 {
+    font-size: 17px;
+  }
+
+  .close-menu {
+    width: 35px;
+    height: 35px;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 20px;
+  }
+
+  body.light .close-menu {
+    color: #17323d;
+    border-color: rgba(20, 70, 85, 0.1);
+    background: rgba(20, 90, 110, 0.05);
+  }
+
+  .menu-item {
+    display: block;
+    width: 100%;
+    padding: 14px;
+
+    margin-bottom: 7px;
+
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 9px;
+
+    background: rgba(255, 255, 255, 0.025);
+
+    color: #b7cad1;
+    text-align: left;
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: 0.25s;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+  }
+
+  body.light .menu-item {
+    color: #536d77;
+    border-color: rgba(20, 70, 85, 0.07);
+    background: rgba(20, 90, 110, 0.025);
+  }
+
+  .menu-item:hover {
+    background: rgba(41, 139, 167, 0.15);
+    color: white;
+    border-color: rgba(71, 182, 211, 0.25);
+    transform: translateX(-4px);
+  }
+
+  body.light .menu-item:hover {
+    color: #15303a;
+  }
+
+  /* =========================
+     MAIN
+  ========================= */
+
+  main {
+    width: 94%;
+    max-width: 1550px;
+    margin: auto;
+    padding: 28px 0 80px;
+  }
+
+  .welcome {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+
+    margin-bottom: 22px;
+
+    opacity: 0;
+    transform: translateY(20px);
+    animation: showUp 0.7s forwards;
+  }
+
+  .welcome h1 {
+    font-size: 28px;
+    font-weight: 800;
+  }
+
+  .welcome p {
+    color: #8ba2ac;
+    margin-top: 7px;
+    font-size: 12px;
+  }
+
+  body.light .welcome p {
+    color: #667e88;
+  }
+
+  .account {
+    padding: 10px 15px;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 9px;
+
+    background: rgba(5, 20, 29, 0.55);
+
+    color: #8ea7b1;
+    font-size: 10px;
+  }
+
+  body.light .account {
+    background: rgba(255, 255, 255, 0.75);
+    border-color: rgba(20, 70, 85, 0.1);
+    color: #637983;
+  }
+
+  /* =========================
+     STATS
+  ========================= */
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+
+    margin-bottom: 18px;
+  }
+
+  .stat {
+    position: relative;
+    overflow: hidden;
+
+    padding: 20px;
+
+    background: rgba(6, 25, 35, 0.72);
+    backdrop-filter: blur(17px);
+
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 14px;
+
+    box-shadow: var(--shadow);
+
+    transition: 0.35s;
+
+    opacity: 0;
+    transform: translateY(25px);
+    animation: showUp 0.7s forwards;
+  }
+
+  body.light .stat {
+    background: rgba(255, 255, 255, 0.82);
+    border-color: rgba(20, 70, 85, 0.09);
+  }
+
+  .stat:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+
+  .stat:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+
+  .stat:nth-child(4) {
+    animation-delay: 0.3s;
+  }
+
+  .stat:hover {
+    transform: translateY(-5px);
+    border-color: rgba(68, 176, 204, 0.28);
+    background: rgba(8, 31, 42, 0.82);
+  }
+
+  body.light .stat:hover {
+    background: rgba(255, 255, 255, 0.98);
+  }
+
+  .stat-label {
+    color: #78929e;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .stat-value {
+    margin-top: 9px;
+    font-size: 24px;
+    font-weight: 800;
+  }
+
+  .stat-change {
+    margin-top: 6px;
+    color: #28bb84;
+    font-size: 9px;
+  }
+
+  /* =========================
+     TICKER
+  ========================= */
+
+  .ticker {
+    display: flex;
+    align-items: center;
+
+    height: 40px;
+
+    overflow: hidden;
+
+    margin-bottom: 18px;
+
+    background: rgba(4, 18, 27, 0.86);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+  }
+
+  body.light .ticker {
+    background: rgba(255, 255, 255, 0.82);
+    border-color: rgba(20, 70, 85, 0.08);
+  }
+
+  .ticker-title {
+    height: 100%;
+    padding: 0 16px;
+
+    display: flex;
+    align-items: center;
+
+    background: #123f50;
+
+    color: #9ed6e4;
+
+    font-size: 9px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+
+  .ticker-track {
+    display: flex;
+    gap: 38px;
+    white-space: nowrap;
+
+    padding-left: 25px;
+
+    animation: ticker 32s linear infinite;
+
+    color: #9bb2bb;
+    font-size: 10px;
+  }
+
+  body.light .ticker-track {
+    color: #657d86;
+  }
+
+  .ticker-up {
+    color: #29ba83;
+  }
+
+  .ticker-down {
+    color: #e4626c;
+  }
+
+  @keyframes ticker {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(-45%);
+    }
+  }
+
+  /* =========================
+     TERMINAL
+  ========================= */
+
+  .terminal {
+    background: rgba(3, 17, 26, 0.94);
+
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 15px;
+
+    overflow: hidden;
+
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.3);
+
+    margin-bottom: 22px;
+  }
+
+  body.light .terminal {
+    background: rgba(255, 255, 255, 0.96);
+    border-color: rgba(20, 70, 85, 0.1);
+  }
+
+  .terminal-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 13px 16px;
+
+    background: rgba(8, 30, 41, 0.96);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  body.light .terminal-top {
+    background: #f7fafb;
+    border-bottom-color: rgba(20, 70, 85, 0.08);
+  }
+
+  .symbol {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .symbol strong {
+    font-size: 14px;
+  }
+
+  .symbol span {
+    font-size: 9px;
+    color: #6f8994;
+  }
+
+  .timeframes {
+    display: flex;
+    gap: 4px;
+  }
+
+  .timeframes button {
+    border: 0;
+    background: transparent;
+    color: #718993;
+    padding: 6px 9px;
+    border-radius: 5px;
+    font-size: 9px;
+    cursor: pointer;
+  }
+
+  .timeframes button.active,
+  .timeframes button:hover {
+    background: #14495b;
+    color: white;
+  }
+
+  .terminal-body {
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    min-height: 460px;
+  }
+
+  /* =========================
+     TRADINGVIEW CHART
+  ========================= */
+
+  .chart {
+    position: relative;
+    min-height: 460px;
+    background: #07141d;
+    overflow: hidden;
+  }
+
+  .tradingview-widget-container {
+    width: 100%;
+    height: 100%;
+    min-height: 460px;
+  }
+
+  .tradingview-widget-container__widget {
+    width: 100%;
+    height: 100%;
+    min-height: 460px;
+  }
+
+  .tradingview-widget-copyright {
+    display: none !important;
+  }
+
+  .market-watch {
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(5, 22, 31, 0.94);
+  }
+
+  body.light .market-watch {
+    background: #f8fafb;
+    border-left-color: rgba(20, 70, 85, 0.08);
+  }
+
+  .watch-title {
+    padding: 14px;
+
+    color: #8ba6b0;
+
+    font-size: 9px;
+    font-weight: bold;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .watch-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 12px 14px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.045);
+
+    cursor: pointer;
+
+    transition: 0.2s;
+  }
+
+  body.light .watch-row {
+    border-bottom-color: rgba(20, 70, 85, 0.06);
+  }
+
+  .watch-row:hover {
+    background: rgba(34, 129, 155, 0.1);
+  }
+
+  .watch-left strong {
+    display: block;
+    font-size: 10px;
+  }
+
+  .watch-left small {
+    display: block;
+    margin-top: 3px;
+    color: #607985;
+    font-size: 8px;
+  }
+
+  .watch-price {
+    text-align: right;
+    font-size: 10px;
+  }
+
+  .watch-change {
+    margin-top: 3px;
+    font-size: 8px;
+  }
+
+  .green {
+    color: var(--green);
+  }
+
+  .red {
+    color: var(--red);
+  }
+
+  /* =========================
+     SECTIONS
+  ========================= */
+
+  .section {
+    margin-top: 22px;
+  }
+
+  .section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 13px;
+  }
+
+  .section-title h2 {
+    font-size: 16px;
+  }
+
+  .section-title span {
+    color: #718b95;
+    font-size: 9px;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .card {
+    background: rgba(6, 25, 35, 0.75);
+    backdrop-filter: blur(16px);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 13px;
+
+    padding: 18px;
+
+    transition: 0.3s;
+  }
+
+  body.light .card {
+    background: rgba(255, 255, 255, 0.82);
+    border-color: rgba(20, 70, 85, 0.08);
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(74, 180, 207, 0.25);
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .card-top strong {
+    font-size: 12px;
+  }
+
+  .badge {
+    padding: 5px 7px;
+
+    border-radius: 5px;
+
+    background: rgba(32, 189, 131, 0.1);
+    color: #32c993;
+
+    font-size: 8px;
+  }
+
+  .card-value {
+    margin-top: 18px;
+
+    font-size: 21px;
+    font-weight: bold;
+  }
+
+  .card-info {
+    margin-top: 7px;
+
+    display: flex;
+    justify-content: space-between;
+
+    color: #718993;
+
+    font-size: 9px;
+  }
+
+  .performance {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 14px;
+  }
+
+  .performance-card {
+    padding: 20px;
+
+    background: rgba(6, 25, 35, 0.74);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 13px;
+  }
+
+  body.light .performance-card {
+    background: rgba(255, 255, 255, 0.82);
+    border-color: rgba(20, 70, 85, 0.08);
+  }
+
+  .performance-card h3 {
+    font-size: 12px;
+    margin-bottom: 16px;
+  }
+
+  .performance-number {
+    font-size: 30px;
+    font-weight: 800;
+  }
+
+  .performance-card p {
+    margin-top: 6px;
+    color: #748c96;
+    font-size: 9px;
+  }
+
+  .bar {
+    margin-top: 20px;
+    height: 7px;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    border-radius: 20px;
+
+    overflow: hidden;
+  }
+
+  .bar span {
+    display: block;
+    height: 100%;
+    width: 72%;
+
+    background: #20bd83;
+
+    border-radius: 20px;
+  }
+
+  .investment-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .investment-table th {
+    padding: 12px;
+
+    text-align: left;
+
+    color: #6e8791;
+
+    font-size: 8px;
+    text-transform: uppercase;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .investment-table td {
+    padding: 13px 12px;
+
+    color: #bdced3;
+
+    font-size: 9px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.045);
+  }
+
+  body.light .investment-table td {
+    color: #526b75;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+
+    background: rgba(6, 25, 35, 0.75);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 13px;
+  }
+
+  body.light .table-wrapper {
+    background: rgba(255, 255, 255, 0.82);
+    border-color: rgba(20, 70, 85, 0.08);
+  }
+
+  .strategy-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .strategy {
+    padding: 17px;
+
+    background: rgba(6, 25, 35, 0.74);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 12px;
+
+    transition: 0.3s;
+  }
+
+  body.light .strategy {
+    background: rgba(255, 255, 255, 0.82);
+    border-color: rgba(20, 70, 85, 0.08);
+  }
+
+  .strategy:hover {
+    transform: translateY(-3px);
+  }
+
+  .strategy h3 {
+    font-size: 11px;
+  }
+
+  .strategy p {
+    color: #6e8791;
+
+    font-size: 8px;
+
+    line-height: 1.6;
+
+    margin-top: 8px;
+  }
+
+  .strategy strong {
+    display: block;
+
+    margin-top: 15px;
+
+    font-size: 18px;
+  }
+
+  .testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .testimonial {
+    padding: 18px;
+
+    background: rgba(6, 25, 35, 0.74);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 13px;
+  }
+
+  body.light .testimonial {
+    background: rgba(255, 255, 255, 0.82);
+    border-color: rgba(20, 70, 85, 0.08);
+  }
+
+  .investor {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .investor img {
+    width: 38px;
+    height: 38px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+  }
+
+  .investor strong {
+    display: block;
+    font-size: 10px;
+  }
+
+  .investor small {
+    display: block;
+    margin-top: 3px;
+
+    color: #6e8791;
+
+    font-size: 8px;
+  }
+
+  .testimonial p {
+    margin-top: 16px;
+
+    color: #94aab2;
+
+    font-size: 9px;
+
+    line-height: 1.7;
+  }
+
+  body.light .testimonial p {
+    color: #617984;
+  }
+
+  .demo-review {
+    display: inline-block;
+
+    margin-top: 12px;
+
+    color: #5e7c87;
+
+    font-size: 7px;
+
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  footer {
+    padding: 35px 20px;
+
+    text-align: center;
+
+    background: rgba(2, 13, 20, 0.9);
+
+    color: #607b86;
+
+    font-size: 9px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  body.light footer {
+    background: rgba(255, 255, 255, 0.9);
+    border-top-color: rgba(20, 70, 85, 0.08);
+  }
+
+  footer strong {
+    color: #a9c1c9;
+  }
+
+  body.light footer strong {
+    color: #294c59;
+  }
+
+  /* =========================
+     MODAL
+  ========================= */
+
+  .modal {
+    position: fixed;
+    inset: 0;
+
+    z-index: 500;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.72);
+  }
+
+  .modal.show {
+    display: flex;
+  }
+
+  .modal-box {
+    width: 100%;
+    max-width: 450px;
+
+    padding: 28px;
+
+    position: relative;
+
+    background: #071c27;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 14px;
+
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5);
+  }
+
+  body.light .modal-box {
+    background: white;
+    border-color: rgba(20, 70, 85, 0.1);
+  }
+
+  .modal-box h2 {
+    font-size: 18px;
+  }
+
+  .modal-box p {
+    margin-top: 10px;
+
+    color: #7f98a2;
+
+    font-size: 10px;
+
+    line-height: 1.6;
+  }
+
+  .modal-close {
+    position: absolute;
+
+    right: 15px;
+    top: 15px;
+
+    width: 32px;
+    height: 32px;
+
+    border: 0;
+
+    border-radius: 7px;
+
+    background: rgba(255, 255, 255, 0.05);
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 18px;
+  }
+
+  body.light .modal-close {
+    color: #18343e;
+    background: rgba(20, 70, 85, 0.06);
+  }
+
+  .modal-notice {
+    margin-top: 18px;
+
+    padding: 14px;
+
+    border-radius: 9px;
+
+    background: rgba(32, 189, 131, 0.07);
+
+    border: 1px solid rgba(32, 189, 131, 0.13);
+
+    color: #7faaa0;
+
+    font-size: 9px;
+
+    line-height: 1.7;
+  }
+
+  /* =====================================================
+     SUPPORT CHAT
+  ===================================================== */
+
+  .support-wrapper {
+    position: fixed;
+
+    right: 24px;
+    bottom: 24px;
+
+    z-index: 2000;
+
+    display: none;
+
+    flex-direction: column;
+    align-items: flex-end;
+
+    gap: 9px;
+  }
+
+  .support-wrapper.show {
+    display: flex;
+
+    animation: supportAppear 0.45s ease forwards;
+  }
+
+  @keyframes supportAppear {
+    from {
+      opacity: 0;
+      transform: translateY(20px) scale(0.9);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .support-label {
+    padding: 9px 14px;
+
+    color: white;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    background: rgba(7, 28, 39, 0.72);
+
+    border: 1px solid rgba(255, 255, 255, 0.13);
+
+    border-radius: 12px;
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.22);
+
+    cursor: pointer;
+
+    animation: labelFloat 2.5s ease-in-out infinite;
+  }
+
+  body.light .support-label {
+    color: #17333d;
+    background: rgba(255, 255, 255, 0.78);
+    border-color: rgba(20, 70, 85, 0.1);
+  }
+
+  @keyframes labelFloat {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-3px);
+    }
+  }
+
+  .support-avatar {
+    position: relative;
+
+    width: 60px;
+    height: 60px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(
+      135deg,
+      rgba(32, 189, 131, 1),
+      rgba(12, 132, 91, 1)
+    );
+
+    border: 3px solid rgba(255, 255, 255, 0.85);
+
+    box-shadow:
+      0 10px 35px rgba(0, 0, 0, 0.35),
+      0 0 0 0 rgba(32, 189, 131, 0.5);
+
+    font-size: 29px;
+
+    cursor: pointer;
+
+    animation:
+      avatarFloat 2.7s ease-in-out infinite,
+      avatarGlow 2s infinite;
+  }
+
+  @keyframes avatarFloat {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-7px);
+    }
+  }
+
+  @keyframes avatarGlow {
+    0% {
+      box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.35),
+        0 0 0 0 rgba(32, 189, 131, 0.5);
+    }
+
+    70% {
+      box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.35),
+        0 0 0 11px rgba(32, 189, 131, 0);
+    }
+
+    100% {
+      box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.35),
+        0 0 0 0 rgba(32, 189, 131, 0);
+    }
+  }
+
+  .online-dot {
+    position: absolute;
+
+    right: -1px;
+    bottom: 1px;
+
+    width: 15px;
+    height: 15px;
+
+    border-radius: 50%;
+
+    background: #24e28b;
+
+    border: 2px solid white;
+
+    box-shadow: 0 0 10px rgba(36, 226, 139, 0.75);
+
+    animation: onlinePulse 1.6s infinite;
+  }
+
+  @keyframes onlinePulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(36, 226, 139, 0.7);
+    }
+
+    70% {
+      box-shadow: 0 0 0 7px rgba(36, 226, 139, 0);
+    }
+
+    100% {
+      box-shadow: 0 0 0 0 rgba(36, 226, 139, 0);
+    }
+  }
+
+  /* =========================
+     CHAT BOX
+  ========================= */
+
+  .chat-box {
+    position: fixed;
+
+    right: 24px;
+    bottom: 100px;
+
+    width: 355px;
+    max-width: calc(100vw - 30px);
+
+    height: 485px;
+
+    z-index: 2100;
+
+    display: none;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    background: rgba(6, 25, 35, 0.76);
+
+    border: 1px solid rgba(255, 255, 255, 0.14);
+
+    border-radius: 20px;
+
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+
+    box-shadow:
+      0 30px 90px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  body.light .chat-box {
+    background: rgba(255, 255, 255, 0.88);
+    border-color: rgba(20, 70, 85, 0.1);
+
+    box-shadow:
+      0 30px 80px rgba(20, 70, 85, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+
+  .chat-box.open {
+    display: flex;
+
+    animation: chatOpen 0.3s ease forwards;
+  }
+
+  @keyframes chatOpen {
+    from {
+      opacity: 0;
+      transform: translateY(15px) scale(0.96);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .chat-header {
+    padding: 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: linear-gradient(
+      135deg,
+      rgba(32, 189, 131, 0.15),
+      rgba(24, 127, 165, 0.12)
+    );
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  }
+
+  .agent {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+  }
+
+  .agent-avatar {
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(135deg, #20bd83, #147da0);
+
+    border: 2px solid rgba(255, 255, 255, 0.65);
+
+    font-size: 21px;
+
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  }
+
+  .agent-name {
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .agent-status {
+    margin-top: 4px;
+
+    color: #20bd83;
+
+    font-size: 9px;
+  }
+
+  .chat-close {
+    width: 32px;
+    height: 32px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.05);
+
+    color: var(--text);
+
+    cursor: pointer;
+
+    font-size: 19px;
+
+    transition: 0.25s;
+  }
+
+  .chat-close:hover {
+    background: rgba(230, 93, 103, 0.15);
+    color: #e65d67;
+  }
+
+  .chat-messages {
+    flex: 1;
+
+    padding: 16px;
+
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+
+    scrollbar-width: thin;
+  }
+
+  .message {
+    max-width: 84%;
+
+    padding: 10px 13px;
+
+    border-radius: 14px;
+
+    font-size: 11px;
+
+    line-height: 1.55;
+  }
+
+  .agent-message {
+    align-self: flex-start;
+
+    color: var(--text);
+
+    background: rgba(255, 255, 255, 0.075);
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
+
+    border-bottom-left-radius: 4px;
+  }
+
+  body.light .agent-message {
+    background: rgba(20, 90, 110, 0.06);
+    border-color: rgba(20, 70, 85, 0.06);
+  }
+
+  .user-message {
+    align-self: flex-end;
+
+    color: white;
+
+    background: linear-gradient(135deg, #20bd83, #159c6d);
+
+    border-bottom-right-radius: 4px;
+
+    box-shadow: 0 5px 15px rgba(32, 189, 131, 0.18);
+  }
+
+  .quick-options {
+    padding: 8px 14px 10px;
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 7px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .quick-options button {
+    border: 1px solid rgba(32, 189, 131, 0.35);
+
+    background: rgba(32, 189, 131, 0.07);
+
+    color: #27c98b;
+
+    padding: 7px 9px;
+
+    border-radius: 20px;
+
+    cursor: pointer;
+
+    font-size: 9px;
+
+    transition: 0.25s;
+  }
+
+  .quick-options button:hover {
+    background: rgba(32, 189, 131, 0.18);
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 5px 15px rgba(32, 189, 131, 0.1);
+  }
+
+  .chat-input {
+    display: flex;
+
+    gap: 8px;
+
+    padding: 13px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .chat-input input {
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 11px 12px;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 10px;
+
+    outline: none;
+
+    background: rgba(255, 255, 255, 0.055);
+
+    color: var(--text);
+
+    font-size: 11px;
+  }
+
+  body.light .chat-input input {
+    background: rgba(20, 90, 110, 0.04);
+    border-color: rgba(20, 70, 85, 0.1);
+  }
+
+  .chat-input input:focus {
+    border-color: rgba(32, 189, 131, 0.45);
+
+    box-shadow: 0 0 0 3px rgba(32, 189, 131, 0.07);
+  }
+
+  .chat-input input::placeholder {
+    color: #78919c;
+  }
+
+  .send-btn {
+    width: 43px;
+
+    border: 0;
+
+    border-radius: 10px;
+
+    background: linear-gradient(135deg, #20bd83, #159c6d);
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+    transition: 0.25s;
+  }
+
+  .send-btn:hover {
+    transform: translateY(-2px);
+
+    box-shadow: 0 7px 20px rgba(32, 189, 131, 0.25);
+  }
+
+  /* =========================
+     RESPONSIVE
+  ========================= */
+
+  @media (max-width: 1000px) {
+    .stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .terminal-body {
+      grid-template-columns: 1fr;
+    }
+
+    .market-watch {
+      border-left: 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .strategy-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 700px) {
+    header {
+      padding: 0 15px;
+    }
+
+    .market-status {
+      display: none;
+    }
+
+    main {
+      width: 92%;
+    }
+
+    .welcome {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .welcome h1 {
+      font-size: 23px;
+    }
+
+    .stats {
+      grid-template-columns: 1fr;
+    }
+
+    .cards,
+    .performance,
+    .testimonial-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .strategy-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .terminal-top {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .chart {
+      min-height: 360px;
+    }
+
+    .tradingview-widget-container,
+    .tradingview-widget-container__widget {
+      min-height: 360px;
+    }
+
+    .terminal-body {
+      min-height: 360px;
+    }
+
+    .side-menu {
+      width: 290px;
+    }
+
+    .chat-box {
+      right: 15px;
+      bottom: 90px;
+
+      width: calc(100vw - 30px);
+
+      height: 455px;
+    }
+
+    .support-wrapper {
+      right: 15px;
+      bottom: 15px;
+    }
+  }
+
+  @keyframes showUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<header>
+  <div class="brand">
+    <img
+      src="image/ChatGPT Image Sep 2, 2026, 01_47_36 AM.png"
+      alt="ApexStone Capitals"
+      class="logo-placeholder"
+    />
+
+    <div class="brand-name">
+      ApexStone Capitals
+
+      <span> CAPITAL • MARKETS • STRATEGIES </span>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <div class="market-status">
+      <span class="status-dot"></span>
+      Markets simulated
+    </div>
+
+    <!-- DARK / LIGHT TOGGLE -->
+    <button
+      class="theme-btn"
+      id="themeBtn"
+      onclick="toggleTheme()"
+      title="Toggle theme"
+    >
+      ☀️
+    </button>
+
+    <button class="menu-btn" onclick="openMenu()">☰</button>
+  </div>
+</header>
+
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+<aside class="side-menu" id="sideMenu">
+  <div class="menu-head">
+    <h2>ApexStone Capitals</h2>
+
+    <button class="close-menu" onclick="closeMenu()">×</button>
+  </div>
+
+  <a href="dashboard.html" class="menu-item"> Dashboard </a>
+
+  <a href="deposit.html" class="menu-item"> Deposit </a>
+
+  <a href="withdrawal.html" class="menu-item"> Withdraw </a>
+
+  <a href="transaction-history.html" class="menu-item"> Transaction History </a>
+
+  <a href="active-investment.html" class="menu-item">active investment</a>
+  <a href="investment.html" class="menu-item">investment plan</a>
+
+  <a href="settings.html" class="menu-item"> Settings </a>
+
+  <a href="login.html" class="menu-item"> Logout </a>
+</aside>
+
+<main>
+  <section class="welcome">
+    <div>
+      <h1>Trading Dashboard</h1>
+
+      <p>
+        Monitor simulated market activity, portfolio performance and asset
+        movements.
+      </p>
+    </div>
+
+    <div class="account">Account ID: ASC-204817</div>
+  </section>
+
+  <section class="stats">
+    <div class="stat">
+      <div class="stat-label">Account Balance</div>
+
+      <div class="stat-value" id="balance" data-usd="25840">$25,840.00</div>
+
+      <div class="stat-change">+8.42% this month</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">Total Deposit</div>
+
+      <div class="stat-value" id="totalDeposit" data-usd="30000">
+        $30,000.00
+      </div>
+
+      <div class="stat-change">Portfolio funding</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">Total Earnings</div>
+
+      <div class="stat-value" id="totalEarnings" data-usd="4840">$4,840.00</div>
+
+      <div class="stat-change">+16.13% simulated</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-label">Active Positions</div>
+
+      <div class="stat-value">08</div>
+
+      <div class="stat-change">05 positions profitable</div>
+    </div>
+  </section>
+
+  <section class="ticker">
+    <div class="ticker-title">MARKET</div>
+
+    <div class="ticker-track">
+      <span>
+        BTC/USDT
+        <b class="ticker-up" data-usd="104821.40"> $104,821.40 </b>
+        +2.41%
+      </span>
+
+      <span>
+        ETH/USDT
+        <b class="ticker-up" data-usd="3842.19"> $3,842.19 </b>
+        +1.84%
+      </span>
+
+      <span>
+        XAU/USD
+        <b class="ticker-up" data-usd="2658.30"> $2,658.30 </b>
+        +0.71%
+      </span>
+
+      <span>
+        USDT/USD
+        <b class="ticker-up" data-usd="1"> $1.00 </b>
+        +0.02%
+      </span>
+
+      <span>
+        EUR/USD
+        <b class="ticker-down" data-usd="1.09"> $1.09 </b>
+        -0.18%
+      </span>
+
+      <span>
+        WTI
+        <b class="ticker-up" data-usd="76.42"> $76.42 </b>
+        +1.12%
+      </span>
+
+      <span>
+        AAPL
+        <b class="ticker-up" data-usd="227.18"> $227.18 </b>
+        +0.62%
+      </span>
+
+      <span>
+        BTC/USDT
+        <b class="ticker-up" data-usd="104821.40"> $104,821.40 </b>
+        +2.41%
+      </span>
+
+      <span>
+        ETH/USDT
+        <b class="ticker-up" data-usd="3842.19"> $3,842.19 </b>
+        +1.84%
+      </span>
+    </div>
+  </section>
+
+  <section class="terminal">
+    <div class="terminal-top">
+      <div class="symbol">
+        <strong> BTCUSD </strong>
+
+        <span> Bitcoin / US Dollar </span>
+      </div>
+
+      <div class="timeframes">
+        <button>1M</button>
+
+        <button>5M</button>
+
+        <button class="active">15M</button>
+
+        <button>1H</button>
+
+        <button>4H</button>
+
+        <button>1D</button>
+      </div>
+    </div>
+
+    <div class="terminal-body">
+      <div class="chart">
+        <div
+          class="tradingview-widget-container"
+          style="height: 100%; width: 100%"
+        >
+          <div
+            class="tradingview-widget-container__widget"
+            style="height: 100%; width: 100%"
+          ></div>
+
+          <script
+            type="text/javascript"
+            src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js"
+            async
+          >
+            {
+              "autosize": true,
+              "symbol": "BINANCE:BTCUSDT",
+              "interval": "15",
+              "timezone": "Etc/UTC",
+              "theme": "dark",
+              "style": "1",
+              "locale": "en",
+              "enable_publishing": false,
+              "hide_top_toolbar": false,
+              "hide_legend": false,
+              "hide_side_toolbar": false,
+              "allow_symbol_change": true,
+              "save_image": false,
+              "calendar": false,
+              "hide_volume": false,
+              "support_host": "https://www.tradingview.com"
+            }
+          </script>
+        </div>
+      </div>
+
+      <div class="market-watch">
+        <div class="watch-title">MARKET WATCH</div>
+
+        <div class="watch-row">
+          <div class="watch-left">
+            <strong> BTCUSD </strong>
+
+            <small> Bitcoin </small>
+          </div>
+
+          <div class="watch-price">
+            <span data-usd="104821.40"> $104,821.40 </span>
+
+            <div class="watch-change green">+2.41%</div>
+          </div>
+        </div>
+
+        <div class="watch-row">
+          <div class="watch-left">
+            <strong> ETHUSD </strong>
+
+            <small> Ethereum </small>
+          </div>
+
+          <div class="watch-price">
+            <span data-usd="3842.19"> $3,842.19 </span>
+
+            <div class="watch-change green">+1.84%</div>
+          </div>
+        </div>
+
+        <div class="watch-row">
+          <div class="watch-left">
+            <strong> XAUUSD </strong>
+
+            <small> Gold </small>
+          </div>
+
+          <div class="watch-price">
+            <span data-usd="2658.30"> $2,658.30 </span>
+
+            <div class="watch-change green">+0.71%</div>
+          </div>
+        </div>
+
+        <div class="watch-row">
+          <div class="watch-left">
+            <strong> EURUSD </strong>
+
+            <small> Euro </small>
+          </div>
+
+          <div class="watch-price">
+            <span data-usd="1.09"> $1.09 </span>
+
+            <div class="watch-change red">-0.18%</div>
+          </div>
+        </div>
+
+        <div class="watch-row">
+          <div class="watch-left">
+            <strong> WTI </strong>
+
+            <small> Crude Oil </small>
+          </div>
+
+          <div class="watch-price">
+            <span data-usd="76.42"> $76.42 </span>
+
+            <div class="watch-change green">+1.12%</div>
+          </div>
+        </div>
+
+        <div class="watch-row">
+          <div class="watch-left">
+            <strong> AAPL </strong>
+
+            <small> Apple Inc. </small>
+          </div>
+
+          <div class="watch-price">
+            <span data-usd="227.18"> $227.18 </span>
+
+            <div class="watch-change green">+0.62%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">
+      <h2>Portfolio Overview</h2>
+
+      <span> Account data </span>
+    </div>
+
+    <div class="performance">
+      <div class="performance-card">
+        <h3>Portfolio Performance</h3>
+
+        <div class="performance-number">+16.13%</div>
+
+        <p>Return across current positions.</p>
+
+        <div class="bar">
+          <span></span>
+        </div>
+      </div>
+
+      <div class="performance-card">
+        <h3>Risk Distribution</h3>
+
+        <div class="performance-number">Moderate</div>
+
+        <p>Diversified exposure across multiple simulated markets.</p>
+
+        <div class="bar">
+          <span style="width: 58%"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">
+      <h2>Market Assets</h2>
+
+      <span> market prices </span>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-top">
+          <strong> Bitcoin </strong>
+
+          <span class="badge"> CRYPTO </span>
+        </div>
+
+        <div class="card-value" data-usd="104821.40">$104,821.40</div>
+
+        <div class="card-info">
+          <span> BTC/USD </span>
+
+          <span class="green"> +2.41% </span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <strong> Ethereum </strong>
+
+          <span class="badge"> CRYPTO </span>
+        </div>
+
+        <div class="card-value" data-usd="3842.19">$3,842.19</div>
+
+        <div class="card-info">
+          <span> ETH/USD </span>
+
+          <span class="green"> +1.84% </span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <strong> Gold </strong>
+
+          <span class="badge"> COMMODITY </span>
+        </div>
+
+        <div class="card-value" data-usd="2658.30">$2,658.30</div>
+
+        <div class="card-info">
+          <span> XAU/USD </span>
+
+          <span class="green"> +0.71% </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">
+      <h2>Active Investments</h2>
+    </div>
+
+    <div class="table-wrapper">
+      <table class="investment-table">
+        <thead>
+          <tr>
+            <th>Asset</th>
+
+            <th>Investment</th>
+
+            <th>Current Value</th>
+
+            <th>Return</th>
+
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Bitcoin Strategy</td>
+
+            <td data-usd="3500">$3,500.00</td>
+
+            <td data-usd="4175">$4,175.00</td>
+
+            <td class="green">+19.29%</td>
+
+            <td class="green">Active</td>
+          </tr>
+
+          <tr>
+            <td>Ethereum Strategy</td>
+
+            <td data-usd="4200">$4,200.00</td>
+
+            <td data-usd="4746">$4,746.00</td>
+
+            <td class="green">+13.00%</td>
+
+            <td class="green">Active</td>
+          </tr>
+
+          <tr>
+            <td>Gold Strategy</td>
+
+            <td data-usd="5000">$5,000.00</td>
+
+            <td data-usd="5350">$5,350.00</td>
+
+            <td class="green">+7.00%</td>
+
+            <td class="green">Active</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">
+      <h2>Investment Strategies</h2>
+    </div>
+
+    <div class="strategy-grid">
+      <div class="strategy">
+        <h3>Balanced Growth</h3>
+
+        <p>
+          A simulated diversified strategy combining digital assets, commodities
+          and market instruments.
+        </p>
+
+        <strong> 12–18% </strong>
+
+        <small> illustrative target range </small>
+      </div>
+
+      <div class="strategy">
+        <h3>Digital Assets</h3>
+
+        <p>
+          A simulated strategy focused on selected cryptocurrency market
+          movements.
+        </p>
+
+        <strong> 15–24% </strong>
+
+        <small> illustrative target range </small>
+      </div>
+
+      <div class="strategy">
+        <h3>Commodity Focus</h3>
+
+        <p>
+          A simulated strategy centered on gold, energy and commodity market
+          movements.
+        </p>
+
+        <strong> 8–15% </strong>
+
+        <small> illustrative target range </small>
+      </div>
+
+      <div class="strategy">
+        <h3>Global Markets</h3>
+
+        <p>
+          A simulated multi-market approach covering equities and currency
+          markets.
+        </p>
+
+        <strong> 10–20% </strong>
+
+        <small> illustrative target range </small>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">
+      <h2>Investor Perspectives</h2>
+    </div>
+
+    <div class="testimonial-grid">
+      <div class="testimonial">
+        <div class="investor">
+          <img
+            src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80"
+            alt="Sample investor"
+          />
+
+          <div>
+            <strong> Daniel M. </strong>
+
+            <small> Investor Profile </small>
+          </div>
+        </div>
+
+        <p>
+          "The dashboard makes it easy to follow market movements and understand
+          how a portfolio can be monitored over time."
+        </p>
+
+        <span class="demo-review"> TESTIMONIAL </span>
+      </div>
+
+      <div class="testimonial">
+        <div class="investor">
+          <img
+            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80"
+            alt="Sample investor"
+          />
+
+          <div>
+            <strong> Sophia R. </strong>
+
+            <small> Investor Profile </small>
+          </div>
+        </div>
+
+        <p>
+          "apexStone Capitals have helped me alot i have withydrawn many times
+          in this great company all thanks to apex"
+        </p>
+
+        <span class="demo-review"> TESTIMONIAL </span>
+      </div>
+
+      <div class="testimonial">
+        <div class="investor">
+          <img
+            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80"
+            alt="Sample investor"
+          />
+
+          <div>
+            <strong> Michael T. </strong>
+
+            <small> Investor Profile </small>
+          </div>
+        </div>
+
+        <p>
+          "The portfolio overview gives a clear picture of simulated market
+          activity and makes the interface feel organised."
+        </p>
+
+        <span class="demo-review"> TESTIMONIAL </span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <strong> ApexStone Capitals </strong>
+
+  <br />
+  <br />
+
+  Professional market dashboard interface.
+
+  <br />
+  <br />
+</footer>
+
+<!-- EXISTING MODAL -->
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">×</button>
+
+    <h2 id="modalTitle">Demo Feature</h2>
+
+    <p>
+      This dashboard feature is currently presented as a visual demonstration.
+    </p>
+
+    <div class="modal-notice">
+      DEMO MODE
+
+      <br />
+      <br />
+
+      No real deposits, withdrawals, cryptocurrency transfers or investment
+      transactions are connected to this interface.
+    </div>
+  </div>
+</div>
+
+<!-- =====================================================
+     SUPPORT BUTTON
+===================================================== -->
+
+<div class="support-wrapper" id="supportWrapper">
+  <div class="support-label" onclick="openChat()">Hi, any help?</div>
+
+  <div class="support-avatar" onclick="openChat()" title="Open support chat">
+    👩🏻‍💼
+
+    <span class="online-dot"></span>
+  </div>
+</div>
+
+<!-- =====================================================
+     LIVE SUPPORT CHAT
+===================================================== -->
+
+<div class="chat-box" id="chatBox">
+  <div class="chat-header">
+    <div class="agent">
+      <div class="agent-avatar">👩🏻‍💼</div>
+
+      <div>
+        <div class="agent-name">ApexStone Support</div>
+
+        <div class="agent-status">● Online</div>
+      </div>
+    </div>
+
+    <button class="chat-close" onclick="closeChat()">×</button>
+  </div>
+
+  <div class="chat-messages" id="chatMessages">
+    <div class="message agent-message">
+      Hi 👋 Welcome to ApexStone Capitals. How can we help you today?
+    </div>
+
+    <div class="message agent-message">
+      You can select one of the options below or type your message.
+    </div>
+  </div>
+
+  <div class="quick-options">
+    <button onclick="sendQuickMessage('I need help with my deposit')">
+      Deposit Help
+    </button>
+
+    <button onclick="sendQuickMessage('I need help with my withdrawal')">
+      Withdrawal
+    </button>
+
+    <button onclick="sendQuickMessage('I need help with my account')">
+      Account Help
+    </button>
+
+    <button onclick="sendQuickMessage('I have another question')">Other</button>
+  </div>
+
+  <div class="chat-input">
+    <input
+      type="text"
+      id="chatInput"
+      placeholder="Type your message..."
+      onkeydown="handleChatKey(event)"
+    />
+
+    <button class="send-btn" onclick="sendChatMessage()">➤</button>
+  </div>
+</div>
+
+<!-- =====================================================
+     EXISTING DASHBOARD JAVASCRIPT
+===================================================== -->
+
+<script>
+  function openMenu() {
+    document.getElementById("sideMenu").classList.add("open");
+
+    document.getElementById("overlay").classList.add("show");
+  }
+
+  function closeMenu() {
+    document.getElementById("sideMenu").classList.remove("open");
+
+    document.getElementById("overlay").classList.remove("show");
+  }
+
+  function showDemo(name) {
+    document.getElementById("modalTitle").textContent = name;
+
+    document.getElementById("modal").classList.add("show");
+
+    closeMenu();
+  }
+
+  function closeModal() {
+    document.getElementById("modal").classList.remove("show");
+  }
+
+  document.getElementById("modal").addEventListener("click", function (e) {
+    if (e.target === this) {
+      closeModal();
+    }
+  });
+
+  const timeframeButtons = document.querySelectorAll(".timeframes button");
+
+  timeframeButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      timeframeButtons.forEach(function (btn) {
+        btn.classList.remove("active");
+      });
+
+      this.classList.add("active");
+    });
+  });
+
+  document.querySelectorAll(".watch-row").forEach(function (row) {
+    row.addEventListener("click", function () {
+      const selected = this.querySelector(".watch-left strong").textContent;
+
+      document.querySelector(".symbol strong").textContent = selected;
+    });
+  });
+</script>
+
+<!-- =====================================================
+     DARK / LIGHT MODE
+===================================================== -->
+
+<script>
+  function applyTheme(theme) {
+    const body = document.body;
+
+    const themeButton = document.getElementById("themeBtn");
+
+    if (theme === "light") {
+      body.classList.add("light");
+
+      themeButton.textContent = "🌙";
+
+      themeButton.title = "Switch to dark mode";
+    } else {
+      body.classList.remove("light");
+
+      themeButton.textContent = "☀️";
+
+      themeButton.title = "Switch to light mode";
+    }
+  }
+
+  function toggleTheme() {
+    const isLight = document.body.classList.contains("light");
+
+    const newTheme = isLight ? "dark" : "light";
+
+    localStorage.setItem("apexstoneTheme", newTheme);
+
+    applyTheme(newTheme);
+  }
+
+  const savedTheme = localStorage.getItem("apexstoneTheme");
+
+  if (savedTheme === "light") {
+    applyTheme("light");
+  } else {
+    applyTheme("dark");
+  }
+</script>
+
+<!-- =====================================================
+     SUPPORT CHAT
+===================================================== -->
+
+<script>
+  /*
+    SUPPORT CHAT
+    The support bubble appears only after
+    the user scrolls down.
+  */
+
+  window.addEventListener("scroll", function () {
+    const support = document.getElementById("supportWrapper");
+
+    if (window.scrollY > 180) {
+      support.classList.add("show");
+    } else {
+      support.classList.remove("show");
+
+      closeChat();
+    }
+  });
+
+  function openChat() {
+    document.getElementById("chatBox").classList.add("open");
+
+    setTimeout(function () {
+      document.getElementById("chatInput").focus();
+    }, 250);
+  }
+
+  function closeChat() {
+    document.getElementById("chatBox").classList.remove("open");
+  }
+
+  function sendChatMessage() {
+    const input = document.getElementById("chatInput");
+
+    const message = input.value.trim();
+
+    if (message === "") {
+      return;
+    }
+
+    addUserMessage(message);
+
+    input.value = "";
+
+    setTimeout(function () {
+      addAgentMessage(
+        "Thanks for your message. Our support team will assist you shortly. Please provide any relevant details so we can help.",
+      );
+    }, 700);
+  }
+
+  function handleChatKey(event) {
+    if (event.key === "Enter") {
+      sendChatMessage();
+    }
+  }
+
+  function addUserMessage(message) {
+    const messages = document.getElementById("chatMessages");
+
+    const div = document.createElement("div");
+
+    div.className = "message user-message";
+
+    div.textContent = message;
+
+    messages.appendChild(div);
+
+    scrollChat();
+  }
+
+  function addAgentMessage(message) {
+    const messages = document.getElementById("chatMessages");
+
+    const div = document.createElement("div");
+
+    div.className = "message agent-message";
+
+    div.textContent = message;
+
+    messages.appendChild(div);
+
+    scrollChat();
+  }
+
+  function sendQuickMessage(message) {
+    addUserMessage(message);
+
+    setTimeout(function () {
+      addAgentMessage(
+        "Sure 👍 We can help with that. Please send us the details of your request.",
+      );
+    }, 600);
+  }
+
+  function scrollChat() {
+    const messages = document.getElementById("chatMessages");
+
+    messages.scrollTop = messages.scrollHeight;
+  }
+</script>
+
+<!-- =====================================================
+     APEXSTONE CURRENCY DISPLAY SYSTEM
+===================================================== -->
+
+<script>
+  /*
+  APEXSTONE CURRENCY DISPLAY SYSTEM
+
+  The dashboard stores its base values in USD.
+
+  When the user selects another currency from settings.html,
+  the dashboard converts the displayed values.
+
+  These are illustrative/demo exchange rates, not live rates.
+  */
+
+  const apexRates = {
+    USD: {
+      symbol: "$",
+      rate: 1,
+    },
+
+    EUR: {
+      symbol: "€",
+      rate: 0.86,
+    },
+
+    GBP: {
+      symbol: "£",
+      rate: 0.75,
+    },
+
+    NGN: {
+      symbol: "₦",
+      rate: 1535,
+    },
+
+    CAD: {
+      symbol: "C$",
+      rate: 1.38,
+    },
+
+    AUD: {
+      symbol: "A$",
+      rate: 1.52,
+    },
+
+    NZD: {
+      symbol: "NZ$",
+      rate: 1.66,
+    },
+
+    CHF: {
+      symbol: "CHF",
+      rate: 0.8,
+    },
+
+    JPY: {
+      symbol: "¥",
+      rate: 147,
+    },
+
+    CNY: {
+      symbol: "¥",
+      rate: 7.12,
+    },
+
+    HKD: {
+      symbol: "HK$",
+      rate: 7.8,
+    },
+
+    SGD: {
+      symbol: "S$",
+      rate: 1.28,
+    },
+
+    ZAR: {
+      symbol: "R",
+      rate: 17.5,
+    },
+
+    GHS: {
+      symbol: "GH₵",
+      rate: 11.2,
+    },
+
+    KES: {
+      symbol: "KSh",
+      rate: 129,
+    },
+
+    UGX: {
+      symbol: "USh",
+      rate: 3500,
+    },
+
+    TZS: {
+      symbol: "TSh",
+      rate: 2650,
+    },
+
+    XOF: {
+      symbol: "CFA",
+      rate: 565,
+    },
+
+    XAF: {
+      symbol: "FCFA",
+      rate: 565,
+    },
+
+    EGP: {
+      symbol: "E£",
+      rate: 48.5,
+    },
+
+    MAD: {
+      symbol: "MAD",
+      rate: 9.75,
+    },
+
+    DZD: {
+      symbol: "DA",
+      rate: 130,
+    },
+
+    TND: {
+      symbol: "DT",
+      rate: 2.9,
+    },
+
+    AED: {
+      symbol: "د.إ",
+      rate: 3.67,
+    },
+
+    SAR: {
+      symbol: "﷼",
+      rate: 3.75,
+    },
+
+    QAR: {
+      symbol: "﷼",
+      rate: 3.64,
+    },
+
+    KWD: {
+      symbol: "د.ك",
+      rate: 0.31,
+    },
+
+    BHD: {
+      symbol: "BD",
+      rate: 0.377,
+    },
+
+    OMR: {
+      symbol: "﷼",
+      rate: 0.385,
+    },
+
+    INR: {
+      symbol: "₹",
+      rate: 83.5,
+    },
+
+    PKR: {
+      symbol: "₨",
+      rate: 280,
+    },
+
+    BDT: {
+      symbol: "৳",
+      rate: 118,
+    },
+
+    LKR: {
+      symbol: "Rs",
+      rate: 303,
+    },
+
+    NPR: {
+      symbol: "₨",
+      rate: 133,
+    },
+
+    THB: {
+      symbol: "฿",
+      rate: 34.5,
+    },
+
+    MYR: {
+      symbol: "RM",
+      rate: 4.2,
+    },
+
+    IDR: {
+      symbol: "Rp",
+      rate: 15400,
+    },
+
+    PHP: {
+      symbol: "₱",
+      rate: 57.5,
+    },
+
+    VND: {
+      symbol: "₫",
+      rate: 24500,
+    },
+
+    KRW: {
+      symbol: "₩",
+      rate: 1380,
+    },
+
+    BRL: {
+      symbol: "R$",
+      rate: 5.45,
+    },
+
+    MXN: {
+      symbol: "$",
+      rate: 19.5,
+    },
+
+    ARS: {
+      symbol: "$",
+      rate: 1400,
+    },
+
+    CLP: {
+      symbol: "$",
+      rate: 950,
+    },
+
+    COP: {
+      symbol: "$",
+      rate: 4100,
+    },
+
+    PEN: {
+      symbol: "S/",
+      rate: 3.75,
+    },
+
+    RUB: {
+      symbol: "₽",
+      rate: 80,
+    },
+
+    UAH: {
+      symbol: "₴",
+      rate: 41,
+    },
+
+    PLN: {
+      symbol: "zł",
+      rate: 3.65,
+    },
+
+    CZK: {
+      symbol: "Kč",
+      rate: 21.7,
+    },
+
+    HUF: {
+      symbol: "Ft",
+      rate: 340,
+    },
+
+    RON: {
+      symbol: "lei",
+      rate: 4.3,
+    },
+
+    BGN: {
+      symbol: "лв",
+      rate: 1.68,
+    },
+
+    SEK: {
+      symbol: "kr",
+      rate: 9.5,
+    },
+
+    NOK: {
+      symbol: "kr",
+      rate: 10.1,
+    },
+
+    DKK: {
+      symbol: "kr",
+      rate: 6.4,
+    },
+
+    ISK: {
+      symbol: "kr",
+      rate: 123,
+    },
+
+    TRY: {
+      symbol: "₺",
+      rate: 41,
+    },
+
+    ILS: {
+      symbol: "₪",
+      rate: 3.45,
+    },
+
+    JOD: {
+      symbol: "د.ا",
+      rate: 0.71,
+    },
+
+    BWP: {
+      symbol: "P",
+      rate: 13.6,
+    },
+
+    NAD: {
+      symbol: "N$",
+      rate: 17.5,
+    },
+
+    MUR: {
+      symbol: "₨",
+      rate: 46,
+    },
+
+    ETB: {
+      symbol: "Br",
+      rate: 145,
+    },
+
+    RWF: {
+      symbol: "RF",
+      rate: 1400,
+    },
+
+    MZN: {
+      symbol: "MT",
+      rate: 64,
+    },
+
+    ZMW: {
+      symbol: "ZK",
+      rate: 27,
+    },
+
+    MWK: {
+      symbol: "MK",
+      rate: 1750,
+    },
+
+    SCR: {
+      symbol: "₨",
+      rate: 13.5,
+    },
+
+    MVR: {
+      symbol: "Rf",
+      rate: 15.4,
+    },
+
+    FJD: {
+      symbol: "FJ$",
+      rate: 2.25,
+    },
+
+    PGK: {
+      symbol: "K",
+      rate: 3.9,
+    },
+
+    WST: {
+      symbol: "WS$",
+      rate: 2.8,
+    },
+
+    TOP: {
+      symbol: "T$",
+      rate: 2.35,
+    },
+
+    VUV: {
+      symbol: "VT",
+      rate: 118,
+    },
+
+    XCD: {
+      symbol: "EC$",
+      rate: 2.7,
+    },
+
+    BBD: {
+      symbol: "Bds$",
+      rate: 2,
+    },
+
+    JMD: {
+      symbol: "J$",
+      rate: 158,
+    },
+
+    TTD: {
+      symbol: "TT$",
+      rate: 6.8,
+    },
+
+    BSD: {
+      symbol: "B$",
+      rate: 1,
+    },
+
+    BZD: {
+      symbol: "BZ$",
+      rate: 2,
+    },
+
+    GYD: {
+      symbol: "G$",
+      rate: 208,
+    },
+
+    SRD: {
+      symbol: "$",
+      rate: 37,
+    },
+
+    HTG: {
+      symbol: "G",
+      rate: 132,
+    },
+
+    DOP: {
+      symbol: "RD$",
+      rate: 60,
+    },
+
+    GTQ: {
+      symbol: "Q",
+      rate: 7.7,
+    },
+
+    HNL: {
+      symbol: "L",
+      rate: 25,
+    },
+
+    NIO: {
+      symbol: "C$",
+      rate: 36.8,
+    },
+
+    CRC: {
+      symbol: "₡",
+      rate: 505,
+    },
+
+    PAB: {
+      symbol: "B/.",
+      rate: 1,
+    },
+
+    BAM: {
+      symbol: "KM",
+      rate: 1.68,
+    },
+
+    RSD: {
+      symbol: "дин",
+      rate: 100,
+    },
+
+    ALL: {
+      symbol: "Lek",
+      rate: 90,
+    },
+
+    MKD: {
+      symbol: "ден",
+      rate: 53,
+    },
+
+    MDL: {
+      symbol: "L",
+      rate: 17.5,
+    },
+
+    GEL: {
+      symbol: "₾",
+      rate: 2.7,
+    },
+
+    AMD: {
+      symbol: "֏",
+      rate: 390,
+    },
+
+    AZN: {
+      symbol: "₼",
+      rate: 1.7,
+    },
+
+    KZT: {
+      symbol: "₸",
+      rate: 480,
+    },
+
+    UZS: {
+      symbol: "лв",
+      rate: 12600,
+    },
+
+    KGS: {
+      symbol: "с",
+      rate: 87,
+    },
+
+    TJS: {
+      symbol: "SM",
+      rate: 10.9,
+    },
+
+    MNT: {
+      symbol: "₮",
+      rate: 3450,
+    },
+
+    AFN: {
+      symbol: "؋",
+      rate: 70,
+    },
+
+    IRR: {
+      symbol: "﷼",
+      rate: 42000,
+    },
+
+    IQD: {
+      symbol: "ع.د",
+      rate: 1310,
+    },
+
+    YER: {
+      symbol: "﷼",
+      rate: 250,
+    },
+
+    SYP: {
+      symbol: "£",
+      rate: 13000,
+    },
+  };
+
+  const selectedCurrency = localStorage.getItem("apexCurrency") || "USD";
+
+  const money = apexRates[selectedCurrency] || apexRates.USD;
+
+  function formatApexMoney(usd) {
+    const value = Number(usd) * money.rate;
+
+    return (
+      money.symbol +
+      Number(value).toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
+    );
+  }
+
+  document.querySelectorAll("[data-usd]").forEach(function (el) {
+    const value = Number(el.getAttribute("data-usd"));
+
+    if (!Number.isNaN(value)) {
+      el.textContent = formatApexMoney(value);
+    }
+  });
+
+  window.apexDisplayCurrency = {
+    code: selectedCurrency,
+
+    symbol: money.symbol,
+
+    rate: money.rate,
+
+    format: formatApexMoney,
+  };
+</script>

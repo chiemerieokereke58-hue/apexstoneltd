@@ -1,0 +1,1298 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings | ApexStone Capitals</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      body {
+        min-height: 100vh;
+        color: #eaf2ff;
+        background:
+          linear-gradient(rgba(5, 15, 30, 0.82), rgba(5, 15, 30, 0.88)),
+          url("https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=2000&q=80");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+      }
+
+      .topbar {
+        height: 70px;
+        display: flex;
+        align-items: center;
+        padding: 0 25px;
+        background: rgba(4, 13, 27, 0.92);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu-btn {
+        border: none;
+        background: transparent;
+        color: white;
+        font-size: 30px;
+        cursor: pointer;
+        margin-right: 20px;
+      }
+
+      .logo {
+        font-size: 21px;
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: -280px;
+        width: 280px;
+        height: 100vh;
+        background: rgba(4, 13, 27, 0.98);
+        backdrop-filter: blur(18px);
+        z-index: 2000;
+        padding-top: 80px;
+        transition: 0.3s ease;
+        border-right: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .sidebar.active {
+        left: 0;
+      }
+
+      .sidebar a {
+        display: block;
+        color: #dce8f8;
+        text-decoration: none;
+        padding: 17px 25px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: 0.2s;
+      }
+
+      .sidebar a:hover {
+        background: rgba(60, 130, 200, 0.16);
+        padding-left: 32px;
+      }
+
+      .close-menu {
+        position: absolute;
+        top: 18px;
+        right: 20px;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 30px;
+        cursor: pointer;
+      }
+
+      .container {
+        width: min(1100px, 94%);
+        margin: 35px auto;
+      }
+
+      .page-title {
+        margin-bottom: 25px;
+      }
+
+      .page-title h1 {
+        font-size: 30px;
+        margin-bottom: 8px;
+      }
+
+      .page-title p {
+        color: #9eb1c9;
+      }
+
+      .card {
+        background: rgba(9, 24, 43, 0.82);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 17px;
+        padding: 25px;
+        margin-bottom: 22px;
+        backdrop-filter: blur(14px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
+      }
+
+      .card h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+      }
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .field.full {
+        grid-column: 1 / -1;
+      }
+
+      label {
+        color: #aebed2;
+        font-size: 14px;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 14px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(1, 10, 22, 0.7);
+        color: white;
+        outline: none;
+      }
+
+      select option {
+        background: #071426;
+        color: white;
+      }
+
+      input:focus,
+      select:focus {
+        border-color: #5d91c5;
+      }
+
+      .save-btn {
+        margin-top: 20px;
+        padding: 13px 22px;
+        border: none;
+        border-radius: 9px;
+        background: #315d87;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .save-btn:hover {
+        background: #3d709f;
+      }
+
+      .security-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 17px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      }
+
+      .security-row:last-child {
+        border-bottom: none;
+      }
+
+      .security-row small {
+        display: block;
+        color: #8397b0;
+        margin-top: 5px;
+      }
+
+      .toggle {
+        width: 48px;
+        height: 25px;
+        position: relative;
+      }
+
+      .toggle input {
+        display: none;
+      }
+
+      .slider {
+        position: absolute;
+        inset: 0;
+        background: #334255;
+        border-radius: 20px;
+        cursor: pointer;
+      }
+
+      .slider:before {
+        content: "";
+        position: absolute;
+        width: 19px;
+        height: 19px;
+        left: 3px;
+        top: 3px;
+        background: white;
+        border-radius: 50%;
+        transition: 0.2s;
+      }
+
+      .toggle input:checked + .slider {
+        background: #416f9d;
+      }
+
+      .toggle input:checked + .slider:before {
+        transform: translateX(23px);
+      }
+
+      .danger {
+        border-color: rgba(190, 80, 80, 0.3);
+      }
+
+      .danger-btn {
+        margin-top: 15px;
+        padding: 12px 20px;
+        border-radius: 9px;
+        border: 1px solid #8c4c4c;
+        background: rgba(120, 40, 40, 0.25);
+        color: #ffbebe;
+        cursor: pointer;
+      }
+
+      .language-note {
+        margin-top: 12px;
+        color: #8296af;
+        font-size: 13px;
+      }
+
+      @media (max-width: 700px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .field.full {
+          grid-column: auto;
+        }
+
+        .container {
+          width: 92%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="topbar">
+      <button class="menu-btn" onclick="openMenu()">☰</button>
+      <div class="logo">APEXSTONE CAPITALS</div>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+      <button class="close-menu" onclick="closeMenu()">×</button>
+
+      <a href="dashboard.html" data-i18n="dashboard">Dashboard</a>
+      <a href="deposit.html" data-i18n="deposit">Deposit</a>
+      <a href="withdrawal.html" data-i18n="withdrawal">Withdrawal</a>
+      <a href="transaction-history.html" data-i18n="transactions"
+        >Transaction History</a
+      >
+      <a href="investment.html" data-i18n="investments">Investment Plans</a>
+      <a href="settings.html" data-i18n="settings">Settings</a>
+      <a href="login.html" data-i18n="logout">Logout</a>
+    </aside>
+
+    <main class="container">
+      <div class="page-title">
+        <h1 data-i18n="settingsTitle">Account Settings</h1>
+        <p data-i18n="settingsSubtitle">
+          Manage your profile, preferences, security and account settings.
+        </p>
+      </div>
+
+      <!-- PROFILE -->
+      <section class="card">
+        <h2 data-i18n="profileInformation">Profile Information</h2>
+
+        <div class="grid">
+          <div class="field">
+            <label data-i18n="fullName">Full Name</label>
+            <input id="fullName" type="text" value="Account User" />
+          </div>
+
+          <div class="field">
+            <label data-i18n="username">Username</label>
+            <input id="username" type="text" value="accountuser" />
+          </div>
+
+          <div class="field">
+            <label data-i18n="email">Email Address</label>
+            <input id="email" type="email" value="user@example.com" />
+          </div>
+
+          <div class="field">
+            <label data-i18n="country">Country</label>
+
+            <select id="country">
+              <option value="">Select Country</option>
+            </select>
+          </div>
+        </div>
+
+        <button
+          class="save-btn"
+          onclick="saveProfile()"
+          data-i18n="saveProfile"
+        >
+          Save Profile
+        </button>
+      </section>
+
+      <!-- CURRENCY & LANGUAGE -->
+      <section class="card">
+        <h2 data-i18n="preferences">Account Preferences</h2>
+
+        <div class="grid">
+          <div class="field">
+            <label data-i18n="currency">Preferred Currency</label>
+
+            <select id="currency" onchange="savePreferences()"></select>
+          </div>
+
+          <div class="field">
+            <label data-i18n="language">Select Language</label>
+
+            <select id="language" onchange="changeLanguage()"></select>
+          </div>
+        </div>
+
+        <p class="language-note" data-i18n="languageNote">
+          Your currency preference is used across the dashboard.
+        </p>
+      </section>
+
+      <!-- PASSWORD -->
+      <section class="card">
+        <h2 data-i18n="changePassword">Change Password</h2>
+
+        <div class="grid">
+          <div class="field full">
+            <label data-i18n="currentPassword">Current Password</label>
+            <input id="currentPassword" type="password" />
+          </div>
+
+          <div class="field">
+            <label data-i18n="newPassword">New Password</label>
+            <input id="newPassword" type="password" />
+          </div>
+
+          <div class="field">
+            <label data-i18n="confirmPassword">Confirm New Password</label>
+            <input id="confirmPassword" type="password" />
+          </div>
+        </div>
+
+        <button
+          class="save-btn"
+          onclick="changePassword()"
+          data-i18n="updatePassword"
+        >
+          Update Password
+        </button>
+      </section>
+
+      <!-- SECURITY -->
+      <section class="card">
+        <h2 data-i18n="security">Security</h2>
+
+        <div class="security-row">
+          <div>
+            <strong data-i18n="loginPassword">Login Password</strong>
+            <small data-i18n="passwordSecurity">
+              Your account is protected by your login password.
+            </small>
+          </div>
+        </div>
+
+        <div class="security-row">
+          <div>
+            <strong data-i18n="loginSessions">Login Sessions</strong>
+            <small data-i18n="loginSessionsText">
+              Manage your active account sessions.
+            </small>
+          </div>
+          <button
+            class="save-btn"
+            onclick="
+              alert(
+                'Session management is available in the account security area.',
+              )
+            "
+            data-i18n="manage"
+          >
+            Manage
+          </button>
+        </div>
+
+        <div class="security-row">
+          <div>
+            <strong data-i18n="verification">Account Verification</strong>
+            <small data-i18n="verificationText">
+              Your account verification status.
+            </small>
+          </div>
+          <span data-i18n="pending">Pending</span>
+        </div>
+      </section>
+
+      <!-- NOTIFICATIONS -->
+      <section class="card">
+        <h2 data-i18n="notifications">Notifications</h2>
+
+        <div class="security-row">
+          <div>
+            <strong data-i18n="accountNotifications"
+              >Account Notifications</strong
+            >
+            <small data-i18n="accountNotificationsText">
+              Receive important account notifications.
+            </small>
+          </div>
+
+          <label class="toggle">
+            <input type="checkbox" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="security-row">
+          <div>
+            <strong data-i18n="securityAlerts">Security Alerts</strong>
+            <small data-i18n="securityAlertsText">
+              Receive alerts about account security.
+            </small>
+          </div>
+
+          <label class="toggle">
+            <input type="checkbox" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="security-row">
+          <div>
+            <strong data-i18n="transactionUpdates">Transaction Updates</strong>
+            <small data-i18n="transactionUpdatesText">
+              Receive updates about account transactions.
+            </small>
+          </div>
+
+          <label class="toggle">
+            <input type="checkbox" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </section>
+
+      <!-- DEACTIVATE -->
+      <section class="card danger">
+        <h2 data-i18n="deactivateAccount">Deactivate Account</h2>
+
+        <p data-i18n="deactivateText">
+          Deactivating your account will prepare the account for closure.
+        </p>
+
+        <button
+          class="danger-btn"
+          onclick="deactivateAccount()"
+          data-i18n="deactivate"
+        >
+          Deactivate Account
+        </button>
+      </section>
+    </main>
+
+    <script>
+      /* =========================
+       COUNTRY LIST
+    ========================== */
+
+      const countries = [
+        "Afghanistan",
+        "Albania",
+        "Algeria",
+        "Andorra",
+        "Angola",
+        "Antigua and Barbuda",
+        "Argentina",
+        "Armenia",
+        "Australia",
+        "Austria",
+        "Azerbaijan",
+        "Bahamas",
+        "Bahrain",
+        "Bangladesh",
+        "Barbados",
+        "Belarus",
+        "Belgium",
+        "Belize",
+        "Benin",
+        "Bhutan",
+        "Bolivia",
+        "Bosnia and Herzegovina",
+        "Botswana",
+        "Brazil",
+        "Brunei",
+        "Bulgaria",
+        "Burkina Faso",
+        "Burundi",
+        "Cabo Verde",
+        "Cambodia",
+        "Cameroon",
+        "Canada",
+        "Central African Republic",
+        "Chad",
+        "Chile",
+        "China",
+        "Colombia",
+        "Comoros",
+        "Congo",
+        "Costa Rica",
+        "Croatia",
+        "Cuba",
+        "Cyprus",
+        "Czech Republic",
+        "Denmark",
+        "Djibouti",
+        "Dominica",
+        "Dominican Republic",
+        "Ecuador",
+        "Egypt",
+        "El Salvador",
+        "Equatorial Guinea",
+        "Eritrea",
+        "Estonia",
+        "Eswatini",
+        "Ethiopia",
+        "Fiji",
+        "Finland",
+        "France",
+        "Gabon",
+        "Gambia",
+        "Georgia",
+        "Germany",
+        "Ghana",
+        "Greece",
+        "Grenada",
+        "Guatemala",
+        "Guinea",
+        "Guinea-Bissau",
+        "Guyana",
+        "Haiti",
+        "Honduras",
+        "Hungary",
+        "Iceland",
+        "India",
+        "Indonesia",
+        "Iran",
+        "Iraq",
+        "Ireland",
+        "Israel",
+        "Italy",
+        "Jamaica",
+        "Japan",
+        "Jordan",
+        "Kazakhstan",
+        "Kenya",
+        "Kiribati",
+        "Kuwait",
+        "Kyrgyzstan",
+        "Laos",
+        "Latvia",
+        "Lebanon",
+        "Lesotho",
+        "Liberia",
+        "Libya",
+        "Liechtenstein",
+        "Lithuania",
+        "Luxembourg",
+        "Madagascar",
+        "Malawi",
+        "Malaysia",
+        "Maldives",
+        "Mali",
+        "Malta",
+        "Marshall Islands",
+        "Mauritania",
+        "Mauritius",
+        "Mexico",
+        "Micronesia",
+        "Moldova",
+        "Monaco",
+        "Mongolia",
+        "Montenegro",
+        "Morocco",
+        "Mozambique",
+        "Myanmar",
+        "Namibia",
+        "Nauru",
+        "Nepal",
+        "Netherlands",
+        "New Zealand",
+        "Nicaragua",
+        "Niger",
+        "Nigeria",
+        "North Korea",
+        "North Macedonia",
+        "Norway",
+        "Oman",
+        "Pakistan",
+        "Palau",
+        "Palestine",
+        "Panama",
+        "Papua New Guinea",
+        "Paraguay",
+        "Peru",
+        "Philippines",
+        "Poland",
+        "Portugal",
+        "Qatar",
+        "Romania",
+        "Russia",
+        "Rwanda",
+        "Saint Kitts and Nevis",
+        "Saint Lucia",
+        "Saint Vincent and the Grenadines",
+        "Samoa",
+        "San Marino",
+        "Sao Tome and Principe",
+        "Saudi Arabia",
+        "Senegal",
+        "Serbia",
+        "Seychelles",
+        "Sierra Leone",
+        "Singapore",
+        "Slovakia",
+        "Slovenia",
+        "Solomon Islands",
+        "Somalia",
+        "South Africa",
+        "South Korea",
+        "South Sudan",
+        "Spain",
+        "Sri Lanka",
+        "Sudan",
+        "Suriname",
+        "Sweden",
+        "Switzerland",
+        "Syria",
+        "Taiwan",
+        "Tajikistan",
+        "Tanzania",
+        "Thailand",
+        "Timor-Leste",
+        "Togo",
+        "Tonga",
+        "Trinidad and Tobago",
+        "Tunisia",
+        "Turkey",
+        "Turkmenistan",
+        "Tuvalu",
+        "Uganda",
+        "Ukraine",
+        "United Arab Emirates",
+        "United Kingdom",
+        "United States",
+        "Uruguay",
+        "Uzbekistan",
+        "Vanuatu",
+        "Vatican City",
+        "Venezuela",
+        "Vietnam",
+        "Yemen",
+        "Zambia",
+        "Zimbabwe",
+      ];
+
+      /* =========================
+       CURRENCY LIST
+    ========================== */
+
+      const currencies = [
+        ["USD", "US Dollar", "$"],
+        ["EUR", "Euro", "€"],
+        ["GBP", "British Pound", "£"],
+        ["NGN", "Nigerian Naira", "₦"],
+        ["CAD", "Canadian Dollar", "C$"],
+        ["AUD", "Australian Dollar", "A$"],
+        ["NZD", "New Zealand Dollar", "NZ$"],
+        ["CHF", "Swiss Franc", "CHF"],
+        ["JPY", "Japanese Yen", "¥"],
+        ["CNY", "Chinese Yuan", "¥"],
+        ["HKD", "Hong Kong Dollar", "HK$"],
+        ["SGD", "Singapore Dollar", "S$"],
+        ["ZAR", "South African Rand", "R"],
+        ["GHS", "Ghanaian Cedi", "GH₵"],
+        ["KES", "Kenyan Shilling", "KSh"],
+        ["UGX", "Ugandan Shilling", "USh"],
+        ["TZS", "Tanzanian Shilling", "TSh"],
+        ["XOF", "West African CFA Franc", "CFA"],
+        ["XAF", "Central African CFA Franc", "FCFA"],
+        ["EGP", "Egyptian Pound", "E£"],
+        ["MAD", "Moroccan Dirham", "MAD"],
+        ["DZD", "Algerian Dinar", "DA"],
+        ["TND", "Tunisian Dinar", "DT"],
+        ["AED", "UAE Dirham", "د.إ"],
+        ["SAR", "Saudi Riyal", "﷼"],
+        ["QAR", "Qatari Riyal", "﷼"],
+        ["KWD", "Kuwaiti Dinar", "د.ك"],
+        ["BHD", "Bahraini Dinar", "BD"],
+        ["OMR", "Omani Rial", "﷼"],
+        ["INR", "Indian Rupee", "₹"],
+        ["PKR", "Pakistani Rupee", "₨"],
+        ["BDT", "Bangladeshi Taka", "৳"],
+        ["LKR", "Sri Lankan Rupee", "Rs"],
+        ["NPR", "Nepalese Rupee", "₨"],
+        ["THB", "Thai Baht", "฿"],
+        ["MYR", "Malaysian Ringgit", "RM"],
+        ["IDR", "Indonesian Rupiah", "Rp"],
+        ["PHP", "Philippine Peso", "₱"],
+        ["VND", "Vietnamese Dong", "₫"],
+        ["KRW", "South Korean Won", "₩"],
+        ["BRL", "Brazilian Real", "R$"],
+        ["MXN", "Mexican Peso", "$"],
+        ["ARS", "Argentine Peso", "$"],
+        ["CLP", "Chilean Peso", "$"],
+        ["COP", "Colombian Peso", "$"],
+        ["PEN", "Peruvian Sol", "S/"],
+        ["UYU", "Uruguayan Peso", "$U"],
+        ["BOB", "Bolivian Boliviano", "Bs"],
+        ["PYG", "Paraguayan Guarani", "₲"],
+        ["RUB", "Russian Ruble", "₽"],
+        ["UAH", "Ukrainian Hryvnia", "₴"],
+        ["PLN", "Polish Zloty", "zł"],
+        ["CZK", "Czech Koruna", "Kč"],
+        ["HUF", "Hungarian Forint", "Ft"],
+        ["RON", "Romanian Leu", "lei"],
+        ["BGN", "Bulgarian Lev", "лв"],
+        ["SEK", "Swedish Krona", "kr"],
+        ["NOK", "Norwegian Krone", "kr"],
+        ["DKK", "Danish Krone", "kr"],
+        ["ISK", "Icelandic Krona", "kr"],
+        ["TRY", "Turkish Lira", "₺"],
+        ["ILS", "Israeli New Shekel", "₪"],
+        ["JOD", "Jordanian Dinar", "د.ا"],
+        ["LBP", "Lebanese Pound", "ل.ل"],
+        ["PKR", "Pakistani Rupee", "₨"],
+        ["BWP", "Botswana Pula", "P"],
+        ["NAD", "Namibian Dollar", "N$"],
+        ["MUR", "Mauritian Rupee", "₨"],
+        ["ETB", "Ethiopian Birr", "Br"],
+        ["RWF", "Rwandan Franc", "RF"],
+        ["MZN", "Mozambican Metical", "MT"],
+        ["ZMW", "Zambian Kwacha", "ZK"],
+        ["MWK", "Malawian Kwacha", "MK"],
+        ["SZL", "Swazi Lilangeni", "E"],
+        ["LSL", "Lesotho Loti", "L"],
+        ["SCR", "Seychellois Rupee", "₨"],
+        ["MVR", "Maldivian Rufiyaa", "Rf"],
+        ["FJD", "Fijian Dollar", "FJ$"],
+        ["PGK", "Papua New Guinean Kina", "K"],
+        ["WST", "Samoan Tala", "WS$"],
+        ["TOP", "Tongan Paʻanga", "T$"],
+        ["VUV", "Vanuatu Vatu", "VT"],
+        ["SBD", "Solomon Islands Dollar", "SI$"],
+        ["XCD", "East Caribbean Dollar", "EC$"],
+        ["BBD", "Barbadian Dollar", "Bds$"],
+        ["JMD", "Jamaican Dollar", "J$"],
+        ["TTD", "Trinidad and Tobago Dollar", "TT$"],
+        ["BSD", "Bahamian Dollar", "B$"],
+        ["BZD", "Belize Dollar", "BZ$"],
+        ["GYD", "Guyanese Dollar", "G$"],
+        ["SRD", "Surinamese Dollar", "$"],
+        ["HTG", "Haitian Gourde", "G"],
+        ["DOP", "Dominican Peso", "RD$"],
+        ["GTQ", "Guatemalan Quetzal", "Q"],
+        ["HNL", "Honduran Lempira", "L"],
+        ["NIO", "Nicaraguan Cordoba", "C$"],
+        ["CRC", "Costa Rican Colon", "₡"],
+        ["PAB", "Panamanian Balboa", "B/."],
+        ["BAM", "Bosnia Convertible Mark", "KM"],
+        ["RSD", "Serbian Dinar", "дин"],
+        ["ALL", "Albanian Lek", "Lek"],
+        ["MKD", "Macedonian Denar", "ден"],
+        ["MDL", "Moldovan Leu", "L"],
+        ["GEL", "Georgian Lari", "₾"],
+        ["AMD", "Armenian Dram", "֏"],
+        ["AZN", "Azerbaijani Manat", "₼"],
+        ["KZT", "Kazakhstani Tenge", "₸"],
+        ["UZS", "Uzbekistani Som", "лв"],
+        ["KGS", "Kyrgyzstani Som", "с"],
+        ["TJS", "Tajikistani Somoni", "SM"],
+        ["MNT", "Mongolian Tugrik", "₮"],
+        ["AFN", "Afghan Afghani", "؋"],
+        ["IRR", "Iranian Rial", "﷼"],
+        ["IQD", "Iraqi Dinar", "ع.د"],
+        ["YER", "Yemeni Rial", "﷼"],
+        ["SYP", "Syrian Pound", "£"],
+        ["LTL", "Lithuanian Litas", "Lt"],
+        ["LVL", "Latvian Lats", "Ls"],
+      ];
+
+      /* =========================
+       LANGUAGE LIST
+    ========================== */
+
+      const languages = [
+        ["en", "English"],
+        ["fr", "French"],
+        ["es", "Spanish"],
+        ["de", "German"],
+        ["it", "Italian"],
+        ["pt", "Portuguese"],
+        ["nl", "Dutch"],
+        ["ru", "Russian"],
+        ["uk", "Ukrainian"],
+        ["pl", "Polish"],
+        ["tr", "Turkish"],
+        ["ar", "Arabic"],
+        ["fa", "Persian"],
+        ["he", "Hebrew"],
+        ["hi", "Hindi"],
+        ["bn", "Bengali"],
+        ["ur", "Urdu"],
+        ["zh-CN", "Chinese (Simplified)"],
+        ["zh-TW", "Chinese (Traditional)"],
+        ["ja", "Japanese"],
+        ["ko", "Korean"],
+        ["th", "Thai"],
+        ["vi", "Vietnamese"],
+        ["id", "Indonesian"],
+        ["ms", "Malay"],
+        ["fil", "Filipino"],
+        ["sw", "Swahili"],
+        ["am", "Amharic"],
+        ["ha", "Hausa"],
+        ["yo", "Yoruba"],
+        ["ig", "Igbo"],
+        ["zu", "Zulu"],
+        ["af", "Afrikaans"],
+        ["sq", "Albanian"],
+        ["hy", "Armenian"],
+        ["az", "Azerbaijani"],
+        ["eu", "Basque"],
+        ["be", "Belarusian"],
+        ["bs", "Bosnian"],
+        ["bg", "Bulgarian"],
+        ["ca", "Catalan"],
+        ["hr", "Croatian"],
+        ["cs", "Czech"],
+        ["da", "Danish"],
+        ["et", "Estonian"],
+        ["fi", "Finnish"],
+        ["gl", "Galician"],
+        ["ka", "Georgian"],
+        ["el", "Greek"],
+        ["gu", "Gujarati"],
+        ["hu", "Hungarian"],
+        ["is", "Icelandic"],
+        ["ga", "Irish"],
+        ["lv", "Latvian"],
+        ["lt", "Lithuanian"],
+        ["mk", "Macedonian"],
+        ["mt", "Maltese"],
+        ["no", "Norwegian"],
+        ["ro", "Romanian"],
+        ["sk", "Slovak"],
+        ["sl", "Slovenian"],
+        ["sr", "Serbian"],
+        ["sv", "Swedish"],
+        ["ta", "Tamil"],
+        ["te", "Telugu"],
+        ["ml", "Malayalam"],
+        ["kn", "Kannada"],
+        ["mr", "Marathi"],
+        ["ne", "Nepali"],
+        ["pa", "Punjabi"],
+        ["si", "Sinhala"],
+        ["km", "Khmer"],
+        ["lo", "Lao"],
+        ["my", "Myanmar"],
+        ["mn", "Mongolian"],
+        ["ps", "Pashto"],
+        ["sd", "Sindhi"],
+        ["tg", "Tajik"],
+        ["tk", "Turkmen"],
+        ["uz", "Uzbek"],
+        ["cy", "Welsh"],
+        ["eo", "Esperanto"],
+      ];
+
+      /* =========================
+       TRANSLATIONS
+    ========================== */
+
+      const translations = {
+        en: {
+          dashboard: "Dashboard",
+          deposit: "Deposit",
+          withdrawal: "Withdrawal",
+          transactions: "Transaction History",
+          depositHistory: "Deposit History",
+          withdrawalHistory: "Withdrawal History",
+          settings: "Settings",
+          logout: "Logout",
+          settingsTitle: "Account Settings",
+          settingsSubtitle:
+            "Manage your profile, preferences, security and account settings.",
+          profileInformation: "Profile Information",
+          fullName: "Full Name",
+          username: "Username",
+          email: "Email Address",
+          country: "Country",
+          saveProfile: "Save Profile",
+          preferences: "Account Preferences",
+          currency: "Preferred Currency",
+          language: "Select Language",
+          languageNote:
+            "Your currency preference is used across the dashboard.",
+          changePassword: "Change Password",
+          currentPassword: "Current Password",
+          newPassword: "New Password",
+          confirmPassword: "Confirm New Password",
+          updatePassword: "Update Password",
+          security: "Security",
+          loginPassword: "Login Password",
+          passwordSecurity: "Your account is protected by your login password.",
+          loginSessions: "Login Sessions",
+          loginSessionsText: "Manage your active account sessions.",
+          manage: "Manage",
+          verification: "Account Verification",
+          verificationText: "Your account verification status.",
+          pending: "Pending",
+          notifications: "Notifications",
+          accountNotifications: "Account Notifications",
+          accountNotificationsText: "Receive important account notifications.",
+          securityAlerts: "Security Alerts",
+          securityAlertsText: "Receive alerts about account security.",
+          transactionUpdates: "Transaction Updates",
+          transactionUpdatesText: "Receive updates about account transactions.",
+          deactivateAccount: "Deactivate Account",
+          deactivateText:
+            "Deactivating your account will prepare the account for closure.",
+          deactivate: "Deactivate Account",
+        },
+
+        fr: {
+          dashboard: "Tableau de bord",
+          deposit: "Dépôt",
+          withdrawal: "Retrait",
+          transactions: "Historique des transactions",
+          depositHistory: "Historique des dépôts",
+          withdrawalHistory: "Historique des retraits",
+          settings: "Paramètres",
+          logout: "Déconnexion",
+          settingsTitle: "Paramètres du compte",
+          settingsSubtitle:
+            "Gérez votre profil, vos préférences et la sécurité de votre compte.",
+          profileInformation: "Informations du profil",
+          fullName: "Nom complet",
+          username: "Nom d'utilisateur",
+          email: "Adresse e-mail",
+          country: "Pays",
+          saveProfile: "Enregistrer le profil",
+          preferences: "Préférences du compte",
+          currency: "Devise préférée",
+          language: "Choisir la langue",
+          languageNote: "Votre devise sera utilisée sur le tableau de bord.",
+          changePassword: "Modifier le mot de passe",
+          currentPassword: "Mot de passe actuel",
+          newPassword: "Nouveau mot de passe",
+          confirmPassword: "Confirmer le nouveau mot de passe",
+          updatePassword: "Mettre à jour",
+          security: "Sécurité",
+          loginPassword: "Mot de passe de connexion",
+          loginSessions: "Sessions de connexion",
+          manage: "Gérer",
+          verification: "Vérification du compte",
+          pending: "En attente",
+          notifications: "Notifications",
+          accountNotifications: "Notifications du compte",
+          securityAlerts: "Alertes de sécurité",
+          transactionUpdates: "Mises à jour des transactions",
+          deactivateAccount: "Désactiver le compte",
+          deactivate: "Désactiver le compte",
+        },
+
+        es: {
+          dashboard: "Panel",
+          deposit: "Depósito",
+          withdrawal: "Retiro",
+          transactions: "Historial de transacciones",
+          depositHistory: "Historial de depósitos",
+          withdrawalHistory: "Historial de retiros",
+          settings: "Configuración",
+          logout: "Cerrar sesión",
+          settingsTitle: "Configuración de la cuenta",
+          profileInformation: "Información del perfil",
+          fullName: "Nombre completo",
+          username: "Nombre de usuario",
+          email: "Correo electrónico",
+          country: "País",
+          saveProfile: "Guardar perfil",
+          preferences: "Preferencias de cuenta",
+          currency: "Moneda preferida",
+          language: "Seleccionar idioma",
+          changePassword: "Cambiar contraseña",
+          currentPassword: "Contraseña actual",
+          newPassword: "Nueva contraseña",
+          confirmPassword: "Confirmar contraseña",
+          updatePassword: "Actualizar contraseña",
+          security: "Seguridad",
+          notifications: "Notificaciones",
+          deactivateAccount: "Desactivar cuenta",
+          deactivate: "Desactivar cuenta",
+        },
+
+        de: {
+          dashboard: "Dashboard",
+          deposit: "Einzahlung",
+          withdrawal: "Auszahlung",
+          transactions: "Transaktionsverlauf",
+          depositHistory: "Einzahlungsverlauf",
+          withdrawalHistory: "Auszahlungsverlauf",
+          settings: "Einstellungen",
+          logout: "Abmelden",
+          settingsTitle: "Kontoeinstellungen",
+          profileInformation: "Profilinformationen",
+          fullName: "Vollständiger Name",
+          username: "Benutzername",
+          email: "E-Mail-Adresse",
+          country: "Land",
+          saveProfile: "Profil speichern",
+          preferences: "Kontoeinstellungen",
+          currency: "Bevorzugte Währung",
+          language: "Sprache auswählen",
+          changePassword: "Passwort ändern",
+          currentPassword: "Aktuelles Passwort",
+          newPassword: "Neues Passwort",
+          confirmPassword: "Neues Passwort bestätigen",
+          updatePassword: "Passwort aktualisieren",
+          security: "Sicherheit",
+          notifications: "Benachrichtigungen",
+          deactivateAccount: "Konto deaktivieren",
+          deactivate: "Konto deaktivieren",
+        },
+
+        pt: {
+          dashboard: "Painel",
+          deposit: "Depósito",
+          withdrawal: "Levantamento",
+          transactions: "Histórico de transações",
+          depositHistory: "Histórico de depósitos",
+          withdrawalHistory: "Histórico de levantamentos",
+          settings: "Definições",
+          logout: "Sair",
+          settingsTitle: "Definições da conta",
+          profileInformation: "Informações do perfil",
+          fullName: "Nome completo",
+          username: "Nome de utilizador",
+          email: "Endereço de e-mail",
+          country: "País",
+          saveProfile: "Guardar perfil",
+          preferences: "Preferências da conta",
+          currency: "Moeda preferida",
+          language: "Selecionar idioma",
+          changePassword: "Alterar palavra-passe",
+          security: "Segurança",
+          notifications: "Notificações",
+          deactivateAccount: "Desativar conta",
+          deactivate: "Desativar conta",
+        },
+      };
+
+      /* =========================
+       LOAD DROPDOWNS
+    ========================== */
+
+      const countrySelect = document.getElementById("country");
+      const currencySelect = document.getElementById("currency");
+      const languageSelect = document.getElementById("language");
+
+      countries.forEach((country) => {
+        const option = document.createElement("option");
+        option.value = country;
+        option.textContent = country;
+        countrySelect.appendChild(option);
+      });
+
+      currencies.forEach((currency) => {
+        const option = document.createElement("option");
+        option.value = currency[0];
+        option.textContent = `${currency[0]} - ${currency[1]} (${currency[2]})`;
+        currencySelect.appendChild(option);
+      });
+
+      languages.forEach((language) => {
+        const option = document.createElement("option");
+        option.value = language[0];
+        option.textContent = language[1];
+        languageSelect.appendChild(option);
+      });
+
+      /* =========================
+       LOAD SAVED SETTINGS
+    ========================== */
+
+      const savedCountry = localStorage.getItem("apexCountry");
+      const savedCurrency = localStorage.getItem("apexCurrency") || "USD";
+      const savedLanguage = localStorage.getItem("apexLanguage") || "en";
+
+      if (savedCountry) {
+        countrySelect.value = savedCountry;
+      }
+
+      currencySelect.value = savedCurrency;
+      languageSelect.value = savedLanguage;
+
+      /* =========================
+       SAVE PROFILE
+    ========================== */
+
+      function saveProfile() {
+        localStorage.setItem(
+          "apexFullName",
+          document.getElementById("fullName").value,
+        );
+
+        localStorage.setItem(
+          "apexUsername",
+          document.getElementById("username").value,
+        );
+
+        localStorage.setItem(
+          "apexEmail",
+          document.getElementById("email").value,
+        );
+
+        localStorage.setItem(
+          "apexCountry",
+          document.getElementById("country").value,
+        );
+
+        alert("Profile saved successfully.");
+      }
+
+      /* =========================
+       SAVE CURRENCY
+    ========================== */
+
+      function savePreferences() {
+        localStorage.setItem("apexCurrency", currencySelect.value);
+
+        alert(
+          "Currency preference saved. Your dashboard will now use " +
+            currencySelect.value +
+            ".",
+        );
+      }
+
+      /* =========================
+       LANGUAGE
+    ========================== */
+
+      function changeLanguage() {
+        const language = languageSelect.value;
+
+        localStorage.setItem("apexLanguage", language);
+
+        applyLanguage(language);
+
+        if (language !== "en" && !translations[language]) {
+          alert(
+            "This language has been selected. The language system is ready for this language, but some translations are not yet included.",
+          );
+        }
+      }
+
+      function applyLanguage(language) {
+        const dictionary = translations[language] || translations.en;
+
+        document.querySelectorAll("[data-i18n]").forEach((element) => {
+          const key = element.getAttribute("data-i18n");
+
+          if (dictionary[key]) {
+            element.textContent = dictionary[key];
+          }
+        });
+      }
+
+      applyLanguage(savedLanguage);
+
+      /* =========================
+       LOAD PROFILE
+    ========================== */
+
+      if (localStorage.getItem("apexFullName")) {
+        document.getElementById("fullName").value =
+          localStorage.getItem("apexFullName");
+      }
+
+      if (localStorage.getItem("apexUsername")) {
+        document.getElementById("username").value =
+          localStorage.getItem("apexUsername");
+      }
+
+      if (localStorage.getItem("apexEmail")) {
+        document.getElementById("email").value =
+          localStorage.getItem("apexEmail");
+      }
+
+      /* =========================
+       PASSWORD
+    ========================== */
+
+      function changePassword() {
+        const newPassword = document.getElementById("newPassword").value;
+
+        const confirmPassword =
+          document.getElementById("confirmPassword").value;
+
+        if (!newPassword || !confirmPassword) {
+          alert("Please fill in the new password fields.");
+          return;
+        }
+
+        if (newPassword !== confirmPassword) {
+          alert("The passwords do not match.");
+          return;
+        }
+
+        alert("Password update request prepared.");
+
+        document.getElementById("currentPassword").value = "";
+        document.getElementById("newPassword").value = "";
+        document.getElementById("confirmPassword").value = "";
+      }
+
+      /* =========================
+       DEACTIVATE
+    ========================== */
+
+      function deactivateAccount() {
+        const confirmed = confirm(
+          "Are you sure you want to deactivate your account?",
+        );
+
+        if (confirmed) {
+          alert("Account deactivation request prepared.");
+        }
+      }
+
+      /* =========================
+       MENU
+    ========================== */
+
+      function openMenu() {
+        document.getElementById("sidebar").classList.add("active");
+      }
+
+      function closeMenu() {
+        document.getElementById("sidebar").classList.remove("active");
+      }
+    </script>
+  </body>
+</html>
